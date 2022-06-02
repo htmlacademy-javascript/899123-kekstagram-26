@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Леонид Черняков](https://up.htmlacademy.ru/javascript/26/user/899123).
-* Наставник: `Неизвестно`.
+* Наставник: [Антон Попов](https://htmlacademy.ru/profile/joker).
 
 ---
 
