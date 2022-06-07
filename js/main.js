@@ -7,7 +7,7 @@
  * @returns {integer} - случайное число
  */
 const getRandomNumber = (min, max = 0) => {
-  if (max >= 0 && min >= 0) {
+  if (max >= 0 && min >= 0 && (Math.abs(max-min) >= 1 )) {
     if (max < min) {
       [min, max] = [max, min];
     }
@@ -16,7 +16,7 @@ const getRandomNumber = (min, max = 0) => {
   throw new Error('Задан некорректный диапазон');
 };
 
-getRandomNumber(0, 10);
+getRandomNumber(1.8, 1.6);
 
 /**
  * Проверяет допустимой ли длины строка
