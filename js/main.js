@@ -29,12 +29,19 @@ const checkStringLength = (string, maxLength = 140) => string.length <= maxLengt
 checkStringLength('string');
 
 const DESCRIPTIONS_LIST = [
-  'Это я',
-  'Это не я',
-  'Теперь это мое',
+  'Мне это нужно',
   'Жаль, что пришлось избавиться от этого',
   'Хочу повторить',
   'Надеюсь, что это было в последний раз',
+  'Очень хочу попробовать это блюдо',
+  'Антон тоже сейчас отдыхает в этих местах',
+  'Наташе бы это точно понравилось',
+  'Елене это пришлось бы по душе',
+  'Это определенно в стиле Егора Беседина',
+  'У Ренаты Назмеевой тоже такое есть',
+  'Встретились с Романом Бизикиным',
+  'Это благодаря Алёне'
+
 ];
 const MESSAGES_LIST = [
   'Всё отлично!',
@@ -54,6 +61,10 @@ const NAMES_LIST = [
   'Роман',
   'Алёна',
   'Леонид',
+  'Ника',
+  'Ольга',
+  'Валерия',
+  'Софья',
 ];
 
 const idUsedForPublications = []; // числа использованные для генерации id публикаций
@@ -92,25 +103,23 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
  * Генерирует случайный комментарий к фотографии
  * @returns {object} - сгенерированный комментарий
  */
-const createComments = () =>
-  ({
-    id: getUniqueRandomNumber(0, 250, idUsedForComments),
-    avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
-    message: getRandomArrayElement(MESSAGES_LIST),
-    name: getRandomArrayElement(NAMES_LIST),
-  });
+const createComments = () => ({
+  id: getUniqueRandomNumber(0, 250, idUsedForComments),
+  avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
+  message: getRandomArrayElement(MESSAGES_LIST),
+  name: getRandomArrayElement(NAMES_LIST),
+});
 
 /**
  * Генерирует случайную публикацию
  * @returns {object} - сгенерированная публикация
  */
-const createPublication = () =>
-  ({
-    id: getUniqueRandomNumber(0, 25, idUsedForPublications),
-    url: `photos/${getRandomNumber(0, 25)}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS_LIST),
-    likes: getRandomNumber(15, 200),
-    comments: Array.from({length: 2}, createComments),
-  });
+const createPublication = () => ({
+  id: getUniqueRandomNumber(0, 25, idUsedForPublications),
+  url: `photos/${getRandomNumber(0, 25)}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS_LIST),
+  likes: getRandomNumber(15, 200),
+  comments: Array.from({length: 2}, createComments),
+});
 
 Array.from({length: 25}, createPublication);
