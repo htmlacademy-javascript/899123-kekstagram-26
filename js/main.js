@@ -7,7 +7,7 @@
  * @returns {integer} - случайное число
  */
 const getRandomNumber = (min, max = 0) => {
-  if (max >= 0 && min >= 0 && (Math.abs(max-min) >= 1 )) {
+  if (max >= 0 && min >= 0 && (max % 1 === 0 && min % 1 === 0)) {
     if (max < min) {
       [min, max] = [max, min];
     }
@@ -15,8 +15,6 @@ const getRandomNumber = (min, max = 0) => {
   }
   throw new Error('Задан некорректный диапазон');
 };
-
-getRandomNumber(1, 2);
 
 /**
  * Проверяет допустимой ли длины строка
@@ -41,7 +39,6 @@ const DESCRIPTIONS_LIST = [
   'У Ренаты Назмеевой тоже такое есть',
   'Встретились с Романом Бизикиным',
   'Это благодаря Алёне'
-
 ];
 const MESSAGES_LIST = [
   'Всё отлично!',
@@ -67,30 +64,46 @@ const NAMES_LIST = [
   'Софья',
 ];
 
-const idUsedForPublications = []; // числа использованные для генерации id публикаций
-const idUsedForComments = []; // числа использованные для генерации id комментариев
+const publicationsId = []; // массив чисел для генерации id публикаций
+const commentsId = []; // массив чисел для генерации id комментариев
+const urls = []; // массив чисел для генерации url
 
 /**
  * Генерирует ранее не использованные числа
  * @param {number} min - минимальное число из диапазона
  * @param {number} max - максимальное число из диапазона
- * @param {array} usedNumbers - массив ранее использованных чисел
- * @returns {integer} - случайное число, которого не было в массиве использованных
+ * @param {array} array - массив для записи доступных значений
+ * @returns {function} - функция генерирующая уникальное значение в зависимости от переданного окружения
  */
-const getUniqueRandomNumber = (min, max, usedNumbers) => {
-  let randomNumber = getRandomNumber(min, max);
-  if (usedNumbers.length !== 0) {
-    for(let i = 0; i < usedNumbers.length; i++) {
-      if (randomNumber === usedNumbers[i]) {
-        randomNumber = getRandomNumber(min, max);
-        i = 0;
-      }
+const getUniqueRandomNumber = (min, max, array) => {
+  if (max < min) {
+    [min, max] = [max, min];
+  }
+  if (!array[0]) {
+    for (let i = min; i <= max; i++) {
+      array.push(i);
     }
   }
 
-  usedNumbers.push(randomNumber);
-  return randomNumber;
+  return () => Number(array.splice(getRandomNumber(0, array.length - 1), 1));
 };
+/**
+ * Случайное число из массива id для публикаций
+ * @returns {number} - случайное число из массива id
+ */
+const getUniqueIdForPublication = getUniqueRandomNumber(1, 25, publicationsId);
+
+/**
+ * Случайное число из массива id для комментариев
+ * @returns {number} - случайное число из массива id
+ */
+const getUniqueIdForComment = getUniqueRandomNumber(1, 250, commentsId);
+
+/**
+ * Случайное число из массива urls
+ * @returns {number} - случайное число из массива urls
+ */
+const getUniqueUrl = getUniqueRandomNumber(1, 25, urls);
 
 /**
  * Получить случайный элемент из массива
@@ -104,7 +117,7 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
  * @returns {object} - сгенерированный комментарий
  */
 const createComments = () => ({
-  id: getUniqueRandomNumber(0, 250, idUsedForComments),
+  id: getUniqueIdForComment(),
   avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGES_LIST),
   name: getRandomArrayElement(NAMES_LIST),
@@ -115,11 +128,12 @@ const createComments = () => ({
  * @returns {object} - сгенерированная публикация
  */
 const createPublication = () => ({
-  id: getUniqueRandomNumber(0, 25, idUsedForPublications),
-  url: `photos/${getRandomNumber(0, 25)}.jpg`,
+  id: getUniqueIdForPublication(),
+  url: `photos/${getUniqueUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS_LIST),
   likes: getRandomNumber(15, 200),
   comments: Array.from({length: 2}, createComments),
 });
 
-Array.from({length: 25}, createPublication);
+const final = Array.from({length: 25}, createPublication);
+final.indexOf(); // Это для того чтобы записать результат в переменную и линтер не ругался
