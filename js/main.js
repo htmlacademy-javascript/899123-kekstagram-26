@@ -132,8 +132,8 @@ const createPublication = () => ({
   url: `photos/${getUniqueUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS_LIST),
   likes: getRandomNumber(15, 200),
-  comments: Array.from({length: 2}, createComments),
+  comments: Array.from({length: getRandomNumber(0,5)}, createComments),
 });
 
-const final = Array.from({length: 25}, createPublication);
-final.indexOf(); // Это для того чтобы записать результат в переменную и линтер не ругался
+const publications = Array.from({length: 25}, createPublication);
+publications.indexOf(); // Это для того чтобы записать результат в переменную и линтер не ругался
