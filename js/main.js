@@ -6,16 +6,15 @@
  * @param {number} max - максимальное число из диапазона
  * @returns {integer} - случайное число
  */
-const getRandomNumber = (min, max = 0) => {
-  if (max >= 0 && min >= 0 && (max % 1 === 0 && min % 1 === 0)) {
-    if (max < min) {
-      [min, max] = [max, min];
-    }
-    return Math.abs(Math.round(min - 0.5 + Math.random() * (max - min + 1)));
+const getRandomPositiveInteger = (min, max = 0) => {
+  if (max < 0 || min < 0 || max % 1 !== 0 || min % 1 !== 0) {
+    throw new Error('Задан некорректный диапазон');
   }
-  throw new Error('Задан некорректный диапазон');
+  if (max < min) {
+    [min, max] = [max, min];
+  }
+  return Math.abs(Math.round(min - 0.5 + Math.random() * (max - min + 1)));
 };
-
 /**
  * Проверяет допустимой ли длины строка
  * @param {string} string - проверяемая строка
@@ -24,7 +23,7 @@ const getRandomNumber = (min, max = 0) => {
  */
 const checkStringLength = (string, maxLength = 140) => string.length <= maxLength;
 
-checkStringLength('string');
+checkStringLength('Lorem ipsum');
 
 const DESCRIPTIONS_LIST = [
   'Мне это нужно',
@@ -64,53 +63,54 @@ const NAMES_LIST = [
   'Софья',
 ];
 
-const publicationsId = []; // массив чисел для генерации id публикаций
-const commentsId = []; // массив чисел для генерации id комментариев
-const urls = []; // массив чисел для генерации url
-
 /**
  * Генерирует ранее не использованные числа
  * @param {number} min - минимальное число из диапазона
  * @param {number} max - максимальное число из диапазона
- * @param {array} array - массив для записи доступных значений
  * @returns {function} - функция генерирующая уникальное значение в зависимости от переданного окружения
  */
-const getUniqueRandomNumber = (min, max, array) => {
+const getUniqueRandomNumber = (min, max) => {
+  if (max < 0 || min < 0 || max % 1 !== 0 || min % 1 !== 0) {
+    throw new Error('Задан некорректный диапазон');
+  }
+  const numbers = [];
   if (max < min) {
     [min, max] = [max, min];
   }
-  if (!array[0]) {
+  if (!numbers[0]) {
     for (let i = min; i <= max; i++) {
-      array.push(i);
+      numbers.push(i);
     }
   }
 
-  return () => Number(array.splice(getRandomNumber(0, array.length - 1), 1));
+  return () => Number(numbers.splice(getRandomPositiveInteger(0, numbers.length - 1), 1));
 };
+
 /**
  * Случайное число из массива id для публикаций
  * @returns {number} - случайное число из массива id
  */
-const getUniqueIdForPublication = getUniqueRandomNumber(1, 25, publicationsId);
+const getUniqueIdForPublication = getUniqueRandomNumber(1, 25);
+
 
 /**
  * Случайное число из массива id для комментариев
  * @returns {number} - случайное число из массива id
  */
-const getUniqueIdForComment = getUniqueRandomNumber(1, 250, commentsId);
+const getUniqueIdForComment = getUniqueRandomNumber(1, 250);
 
 /**
  * Случайное число из массива urls
  * @returns {number} - случайное число из массива urls
  */
-const getUniqueUrl = getUniqueRandomNumber(1, 25, urls);
+const getUniqueUrl = getUniqueRandomNumber(1, 25);
 
 /**
  * Получить случайный элемент из массива
  * @param {array} elements - массив с элементами
  * @returns - случайный элемент из массива
  */
-const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements.length-1)];
+const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
 
 /**
  * Генерирует случайный комментарий к фотографии
@@ -118,7 +118,7 @@ const getRandomArrayElement = (elements) => elements[getRandomNumber(0, elements
  */
 const createComments = () => ({
   id: getUniqueIdForComment(),
-  avatar: `img/avatar-${getRandomNumber(1, 6)}.svg`,
+  avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
   message: getRandomArrayElement(MESSAGES_LIST),
   name: getRandomArrayElement(NAMES_LIST),
 });
@@ -131,8 +131,8 @@ const createPublication = () => ({
   id: getUniqueIdForPublication(),
   url: `photos/${getUniqueUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS_LIST),
-  likes: getRandomNumber(15, 200),
-  comments: Array.from({length: getRandomNumber(0,5)}, createComments),
+  likes: getRandomPositiveInteger(15, 200),
+  comments: Array.from({length: getRandomPositiveInteger(0,5)}, createComments),
 });
 
 const publications = Array.from({length: 25}, createPublication);
