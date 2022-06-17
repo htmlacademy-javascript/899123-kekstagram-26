@@ -1,2 +1,2 @@
-import { generatePublications } from './modules/generate-publications.js';
+import { generatePublications } from './mocks/generate-mocks.js';
 generatePublications();
