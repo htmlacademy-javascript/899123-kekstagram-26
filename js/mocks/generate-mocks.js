@@ -4,6 +4,19 @@ import {
   getRandomArrayElement,
 } from './utils.js';
 
+/**
+ * Настройки генератора моков
+ */
+const OPTIONS = {
+  generatedPublicationsAmount: 25,
+  publicationsIdRange: [1, 25],
+  commentsIdRange : [1, 250],
+  urlNumbersRange: [1, 25],
+  avatarNumbersRange: [1, 6],
+  likesRange: [15, 200],
+  commentsAmountRange: [1, 2],
+};
+
 const DESCRIPTIONS_LIST = [
   'Мне это нужно',
   'Жаль, что пришлось избавиться от этого',
@@ -46,19 +59,19 @@ const NAMES_LIST = [
 * Случайное число из массива id для публикаций
 * @returns {number} - случайное число из массива id
 */
-const getUniqueIdForPublication = getUniqueRandomPositiveInteger(1, 25);
+const getUniqueIdForPublication = getUniqueRandomPositiveInteger(...OPTIONS.publicationsIdRange);
 
 /**
 * Случайное число из массива id для комментариев
 * @returns {number} - случайное число из массива id для комментариев
 */
-const getUniqueIdForComment = getUniqueRandomPositiveInteger(1, 250);
+const getUniqueIdForComment = getUniqueRandomPositiveInteger(...OPTIONS.commentsIdRange);
 
 /**
 * Случайное число из массива urls
 * @returns {number} - случайное число из массива urls
 */
-const getUniqueUrl = getUniqueRandomPositiveInteger(1, 25);
+const getUniqueUrl = getUniqueRandomPositiveInteger(...OPTIONS.urlNumbersRange);
 
 /**
  * Генерирует случайный комментарий к фотографии
@@ -66,7 +79,7 @@ const getUniqueUrl = getUniqueRandomPositiveInteger(1, 25);
  */
 const createComments = () => ({
   id: getUniqueIdForComment(),
-  avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
+  avatar: `img/avatar-${getRandomPositiveInteger(...OPTIONS.avatarNumbersRange)}.svg`,
   message: getRandomArrayElement(MESSAGES_LIST),
   name: getRandomArrayElement(NAMES_LIST),
 });
@@ -79,9 +92,9 @@ const createPublication = () => ({
   id: getUniqueIdForPublication(),
   url: `photos/${getUniqueUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS_LIST),
-  likes: getRandomPositiveInteger(15, 200),
-  comments: Array.from({length: getRandomPositiveInteger(0,5)}, createComments),
+  likes: getRandomPositiveInteger(...OPTIONS.likesRange),
+  comments: Array.from({length: getRandomPositiveInteger(...OPTIONS.commentsAmountRange)}, createComments),
 });
 
-const generatePublications = () => Array.from({length: 25}, createPublication);
+const generatePublications = () => Array.from({length: OPTIONS.generatedPublicationsAmount}, createPublication);
 export { generatePublications };
