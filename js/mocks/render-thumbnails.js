@@ -1,5 +1,4 @@
 import {
-  OPTIONS,
   generatePublications
 } from './generate-mocks.js';
 
@@ -9,13 +8,13 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const picturesContainer = document.querySelector('.pictures');
 
 const picturesFragment = document.createDocumentFragment();
-for (let i = 0; i < OPTIONS.GENERATED_PUBLICATIONS_AMOUNT; i++) {
+publications.forEach((publication) => {
   const pictureTemplateClone = pictureTemplate.cloneNode(true);
-  pictureTemplateClone.querySelector('.picture__img').src = publications[i].url;
-  pictureTemplateClone.querySelector('.picture__likes').textContent = publications[i].likes;
-  pictureTemplateClone.querySelector('.picture__comments').textContent = publications[i].comments.length;
+  pictureTemplateClone.querySelector('.picture__img').src = publication.url;
+  pictureTemplateClone.querySelector('.picture__likes').textContent = publication.likes;
+  pictureTemplateClone.querySelector('.picture__comments').textContent = publication.comments.length;
 
   picturesFragment.appendChild(pictureTemplateClone);
-}
+});
 
 picturesContainer.appendChild(picturesFragment);
