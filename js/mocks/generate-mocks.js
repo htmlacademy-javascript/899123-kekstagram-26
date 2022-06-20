@@ -8,13 +8,13 @@ import {
  * Настройки генератора моков
  */
 const OPTIONS = {
-  generatedPublicationsAmount: 25,
-  publicationsIdRange: [1, 25],
-  commentsIdRange : [1, 250],
-  urlNumbersRange: [1, 25],
-  avatarNumbersRange: [1, 6],
-  likesRange: [15, 200],
-  commentsAmountRange: [1, 2],
+  GENERATED_PUBLICATIONS_AMOUNT: 25,
+  PUBLICATIONS_ID_RANGE: [1, 25],
+  COMMENTS_ID_RANGE: [1, 250],
+  URL_NUMBERS_RANGE: [1, 25],
+  AVATAR_NUMBERS_RANGE: [1, 6],
+  LIKES_AMOUNT_RANGE: [15, 200],
+  COMMENTS_AMOUNT_RANGE: [1, 2],
 };
 
 const DESCRIPTIONS_LIST = [
@@ -29,8 +29,9 @@ const DESCRIPTIONS_LIST = [
   'Это определенно в стиле Егора Беседина',
   'У Ренаты Назмеевой тоже такое есть',
   'Встретились с Романом Бизикиным',
-  'Это благодаря Алёне'
+  'Это благодаря Алёне',
 ];
+
 const MESSAGES_LIST = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
@@ -39,6 +40,7 @@ const MESSAGES_LIST = [
   'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
+
 const NAMES_LIST = [
   'Антон',
   'Наташа',
@@ -59,19 +61,19 @@ const NAMES_LIST = [
 * Случайное число из массива id для публикаций
 * @returns {number} - случайное число из массива id
 */
-const getUniqueIdForPublication = getUniqueRandomPositiveInteger(...OPTIONS.publicationsIdRange);
+const getUniqueIdForPublication = getUniqueRandomPositiveInteger(...OPTIONS.PUBLICATIONS_ID_RANGE);
 
 /**
 * Случайное число из массива id для комментариев
 * @returns {number} - случайное число из массива id для комментариев
 */
-const getUniqueIdForComment = getUniqueRandomPositiveInteger(...OPTIONS.commentsIdRange);
+const getUniqueIdForComment = getUniqueRandomPositiveInteger(...OPTIONS.COMMENTS_ID_RANGE);
 
 /**
 * Случайное число из массива urls
 * @returns {number} - случайное число из массива urls
 */
-const getUniqueUrl = getUniqueRandomPositiveInteger(...OPTIONS.urlNumbersRange);
+const getUniqueUrl = getUniqueRandomPositiveInteger(...OPTIONS.URL_NUMBERS_RANGE);
 
 /**
  * Генерирует случайный комментарий к фотографии
@@ -79,7 +81,7 @@ const getUniqueUrl = getUniqueRandomPositiveInteger(...OPTIONS.urlNumbersRange);
  */
 const createComments = () => ({
   id: getUniqueIdForComment(),
-  avatar: `img/avatar-${getRandomPositiveInteger(...OPTIONS.avatarNumbersRange)}.svg`,
+  avatar: `img/avatar-${getRandomPositiveInteger(...OPTIONS.AVATAR_NUMBERS_RANGE)}.svg`,
   message: getRandomArrayElement(MESSAGES_LIST),
   name: getRandomArrayElement(NAMES_LIST),
 });
@@ -92,9 +94,12 @@ const createPublication = () => ({
   id: getUniqueIdForPublication(),
   url: `photos/${getUniqueUrl()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS_LIST),
-  likes: getRandomPositiveInteger(...OPTIONS.likesRange),
-  comments: Array.from({length: getRandomPositiveInteger(...OPTIONS.commentsAmountRange)}, createComments),
+  likes: getRandomPositiveInteger(...OPTIONS.LIKES_AMOUNT_RANGE),
+  comments: Array.from({length: getRandomPositiveInteger(...OPTIONS.COMMENTS_AMOUNT_RANGE)}, createComments),
 });
 
-const generatePublications = () => Array.from({length: OPTIONS.generatedPublicationsAmount}, createPublication);
-export { generatePublications };
+const generatePublications = () => Array.from({length: OPTIONS.GENERATED_PUBLICATIONS_AMOUNT}, createPublication);
+export {
+  OPTIONS,
+  generatePublications
+};
