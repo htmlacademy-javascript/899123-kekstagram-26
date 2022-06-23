@@ -90,4 +90,4 @@ const openModal = (publication) => {
 // Кнопка закрытия окна
 closeBtn.addEventListener('click', closeModal);
 
-export {openModal};
+export { openModal };
