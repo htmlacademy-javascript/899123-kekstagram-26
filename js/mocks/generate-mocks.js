@@ -100,6 +100,5 @@ const createPublication = () => ({
 
 const generatePublications = () => Array.from({length: OPTIONS.GENERATED_PUBLICATIONS_AMOUNT}, createPublication);
 export {
-  OPTIONS,
   generatePublications
 };

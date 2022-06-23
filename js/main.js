@@ -1,1 +1,1 @@
-import './mocks/render-thumbnails.js';
+import './render-thumbnails.js';
