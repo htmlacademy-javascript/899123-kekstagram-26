@@ -1,6 +1,6 @@
 import { generatePublications } from './mocks/generate-mocks.js';
 
-import { openModal } from './big-picture-mode';
+import { openModal } from './big-picture-mode.js';
 
 const publications = generatePublications();
 
