@@ -1,3 +1,5 @@
+import { isEscape } from './utils.js';
+
 const body = document.querySelector('body');
 const modal = document.querySelector('.big-picture');
 const photo = modal.querySelector('.big-picture__img img');
@@ -18,34 +20,6 @@ commentLoader.classList.add('hidden');
 
 const commentTemplate = comments[0];
 comments.forEach((comment) => comment.remove());
-
-/**
- * Переключение классов, в зависимости от выбранного режима.
- */
-const toggleModal = () => {
-  modal.classList.toggle('hidden');
-  body.classList.toggle('modal-open');
-};
-
-/**
- * Закрывает модальное окно.
- */
-const closeModal = () => {
-  document.removeEventListener('keydown', isEscape);
-  toggleModal();
-  commentsContainer.innerHTML = '';
-};
-
-/**
- * Закрывает модальное окно, если был нажат Escape.
- * @param {object} evt - событие, считанное при нажатии клавиши
- */
-// При функцональном выражении линтер ругается на использование перед определением в ф-ции closeModal
-function isEscape (evt) {
-  if (evt.code === 'Escape') {
-    closeModal();
-  }
-}
 
 /**
  * Заполняет раздел комментариев данными, из массива комментариев.
@@ -78,14 +52,43 @@ const fillModal = (publication) => {
 };
 
 /**
+ * Переключение классов, в зависимости от выбранного режима.
+ */
+const toggleModalClasses = () => {
+  modal.classList.toggle('hidden');
+  body.classList.toggle('modal-open');
+};
+
+/**
+ * Закрывает модальное окно.
+ */
+const closeModal = () => {
+  document.removeEventListener('keydown', onModalEscapeKeydown);
+  toggleModalClasses();
+  commentsContainer.innerHTML = '';
+};
+
+/**
  * Осуществляет открытие модального окна
  * @param {object} publication - Полная информация об одной публикации
  */
 const openModal = (publication) => {
-  toggleModal();
-  document.addEventListener('keydown', isEscape);
+  toggleModalClasses();
+  document.addEventListener('keydown', onModalEscapeKeydown);
   fillModal(publication);
 };
+
+/**
+ * Закрывает модальное окно, если был нажат Escape.
+ * @param {object} evt - событие, считанное при нажатии клавиши
+ */
+// При функцональном выражении линтер ругается на использование перед определением в ф-ции closeModal
+function onModalEscapeKeydown (evt) {
+  if (isEscape(evt.code)) {
+    evt.preventDefault();
+    closeModal();
+  }
+}
 
 // Кнопка закрытия окна
 closeBtn.addEventListener('click', closeModal);
