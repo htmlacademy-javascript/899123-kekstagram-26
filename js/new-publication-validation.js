@@ -7,7 +7,7 @@ const ValidatorSettings = {
   maxHashtagsAmount: 5,
   maxDescriptionLength: 140,
 };
-const {hashtagRE, hashtagsMaxAmount, maxDescriptionLength} = ValidatorSettings;
+const {hashtagRE, maxHashtagsAmount, maxDescriptionLength} = ValidatorSettings;
 Object.freeze(ValidatorSettings);
 
 const form = document.querySelector('#upload-select-image');
@@ -16,26 +16,60 @@ const descriptionInput = form.querySelector('.text__description');
 
 // Валидация данных
 
+let errorMessage;
+
+/**
+ *
+ * @returns актуальная ошибка
+ */
+const getErrorMessage = () => errorMessage;
+
 /**
  * Проверяет строку "#Хэштег"
- * @param {string} inputValue - Строчка, введенная в строку #ХэшТег
+ * @param {string} hashtagInputValue - Текст, введенный в поле для хэштегов
  * @returns {boolean} - результат проверки
  */
-const validateHashtags = (inputValue) => {
+const validateHashtags = (hashtagInputValue) => {
 
-  const hashtags = inputValue.split(' ');
+  if (hashtagInputValue === '') {
+    return true;
+  }
 
-  if (hashtags.length > hashtagsMaxAmount) {
+  if (hashtagInputValue === '#') {
+    errorMessage = 'Хэштег не может состоять только из #';
+    return false;
+  }
+
+  if (!hashtagInputValue.startsWith('#')) {
+    errorMessage = 'Хэштег должен начинаться с #';
+    return false;
+  }
+
+  if (hashtagInputValue.endsWith(' ')) {
+    errorMessage = 'Хэштег не должен заканчиваться пробелом';
+    return false;
+  }
+
+  const hashtags = hashtagInputValue.split(' ');
+  if (hashtags.includes('')) {
+    errorMessage = 'Только один пробел между хэштегами';
+    return false;
+  }
+
+  if (hashtags.length > maxHashtagsAmount) {
+    errorMessage = `Максимальное количество хэштегов - ${maxHashtagsAmount}`;
     return false;
   }
 
   return hashtags.every((hashtag, i) => {
     if (!hashtagRE.test(hashtag)) {
+      errorMessage = 'Хэштег может содержать только символы от a до z';
       return false;
     }
 
     for (++i; i < hashtags.length; i++) {
       if (hashtag.toLowerCase() === hashtags[i].toLowerCase()) {
+        errorMessage = 'Хэштеги не должны повторяться';
         return false;
       }
     }
@@ -55,10 +89,11 @@ const validator = new Pristine(form, {
   errorClass: 'is-invalid',
   successClass: 'is-valid',
   errorTextParent: 'img-upload__field-wrapper',
-  errorTextClass: 'hidden'
+  errorTag: 'div',
+  errorTextClass: 'validation-error'
 });
 
-validator.addValidator(hashtagsInput, validateHashtags);
-validator.addValidator(descriptionInput, validateDescription);
+validator.addValidator(hashtagsInput, validateHashtags, getErrorMessage);
+validator.addValidator(descriptionInput, validateDescription, `Не более ${maxDescriptionLength} символов`);
 
 export { validator };
