@@ -693,7 +693,7 @@ main {
   font-weight: 400;
   color: #000000;
 
-  border-radius: 5px;
+  border-radius: 0px;
 }
 
 .text__description {
@@ -707,7 +707,17 @@ main {
   font-weight: 400;
   color: #000000;
 
-  border-radius: 5px;
+  border-radius: 0px;
+}
+
+.img-upload__field-wrapper.is-invalid * {
+  outline: none;
+  border-bottom: 3px solid red;
+}
+
+.img-upload__field-wrapper.is-valid * {
+  outline: none;
+  border-bottom: 3px solid green;
 }
 
 

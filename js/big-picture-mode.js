@@ -9,14 +9,14 @@ const description = modal.querySelector('.social__caption');
 const commentsContainer = modal.querySelector('.social__comments');
 const comments = commentsContainer.querySelectorAll('.social__comment');
 const commentsAmount = modal.querySelector('.comments-count');
-const commentLoader = modal.querySelector('.comments-loader');
-const commentCount = modal.querySelector('.social__comment-count');
+const commentsLoader = modal.querySelector('.comments-loader');
+const commentsCount = modal.querySelector('.social__comment-count');
 
 const closeBtn = modal.querySelector('#picture-cancel');
 
-// Временное отключение(в рамках задания)
-commentCount.classList.add('hidden');
-commentLoader.classList.add('hidden');
+// TODO: Убрать временное отключение
+commentsCount.classList.add('hidden');
+commentsLoader.classList.add('hidden');
 
 const commentTemplate = comments[0];
 comments.forEach((comment) => comment.remove());
@@ -63,7 +63,7 @@ const toggleModalClasses = () => {
  * Закрывает модальное окно.
  */
 const closeModal = () => {
-  document.removeEventListener('keydown', onModalEscapeKeydown);
+  document.removeEventListener('keydown', modalKeydownHandler);
   toggleModalClasses();
   commentsContainer.innerHTML = '';
 };
@@ -74,7 +74,7 @@ const closeModal = () => {
  */
 const openModal = (publication) => {
   toggleModalClasses();
-  document.addEventListener('keydown', onModalEscapeKeydown);
+  document.addEventListener('keydown', modalKeydownHandler);
   fillModal(publication);
 };
 
@@ -83,7 +83,7 @@ const openModal = (publication) => {
  * @param {object} evt - событие, считанное при нажатии клавиши
  */
 // При функцональном выражении линтер ругается на использование перед определением в ф-ции closeModal
-function onModalEscapeKeydown (evt) {
+function modalKeydownHandler (evt) {
   if (isEscape(evt.code)) {
     evt.preventDefault();
     closeModal();
