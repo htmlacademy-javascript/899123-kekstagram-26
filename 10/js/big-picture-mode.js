@@ -1,6 +1,6 @@
 import { isEscape } from './utils.js';
 
-const body = document.querySelector('body');
+const body = document.body;
 const modal = document.querySelector('.big-picture');
 const photo = modal.querySelector('.big-picture__img img');
 const likes = modal.querySelector('.likes-count');

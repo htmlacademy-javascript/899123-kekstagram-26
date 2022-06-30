@@ -59,7 +59,7 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
  * @param {string} code - строка с названием клавиши
  * @returns {boolean}
  */
-const isEscape = (code) => code === 'Escape';
+const isEscape = (code) => (code === 'Escape' || code === 'Esc');
 
 export {
   getRandomPositiveInteger,
