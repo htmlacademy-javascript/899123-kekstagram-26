@@ -719,6 +719,7 @@ main {
 }
 
 .img-upload__field-wrapper.is-invalid .text__description {
+  color: red;
   border-bottom: 4px solid red;
 }
 .img-upload__field-wrapper.is-valid .text__description {
@@ -726,6 +727,7 @@ main {
 }
 
 .img-upload__field-wrapper.is-invalid .text__hashtags {
+  color: red;
   border-bottom: 4px solid red;
 }
 
