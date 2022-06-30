@@ -3,7 +3,7 @@ import { checkStringLength } from './utils.js';
 import '../pristine/pristine.min.js';
 
 const ValidatorSettings = {
-  hashtagRE: /^#[a-z]{1,19}$/i,
+  hashtagRE: /^#[a-z,а-я,Ё,ё]{1,19}$/i,
   maxHashtagsAmount: 5,
   maxDescriptionLength: 140,
 };
