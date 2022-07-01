@@ -700,6 +700,7 @@ main {
 .text__description {
   width: 450px;
   height: 100px;
+  resize: vertical;
 
   margin: 0 auto;
   padding: 15px 10px;
