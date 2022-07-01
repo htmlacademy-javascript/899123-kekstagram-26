@@ -21,6 +21,8 @@ commentsLoader.classList.add('hidden');
 const commentTemplate = comments[0];
 comments.forEach((comment) => comment.remove());
 
+// Наполнение окна
+
 /**
  * Заполняет раздел комментариев данными, из массива комментариев.
  * @param {Array} commentsList - массив комментариев
@@ -51,46 +53,40 @@ const fillModal = (publication) => {
   description.textContent = publication.description;
 };
 
-/**
- * Переключение классов, в зависимости от выбранного режима.
- */
-const toggleModalClasses = () => {
-  modal.classList.toggle('hidden');
-  body.classList.toggle('modal-open');
-};
+// Управление окном
 
-/**
- * Закрывает модальное окно.
- */
 const closeModal = () => {
+  modal.classList.add('hidden');
+  body.classList.remove('modal-open');
+
   document.removeEventListener('keydown', modalKeydownHandler);
-  toggleModalClasses();
   commentsContainer.innerHTML = '';
 };
 
 /**
- * Осуществляет открытие модального окна
+ * Открывает окно
  * @param {object} publication - Полная информация об одной публикации
  */
 const openModal = (publication) => {
-  toggleModalClasses();
+  modal.classList.remove('hidden');
+  body.classList.add('modal-open');
+
+  closeBtn.addEventListener('click', closeModal);
   document.addEventListener('keydown', modalKeydownHandler);
   fillModal(publication);
 };
+
+// Обработчики
 
 /**
  * Закрывает модальное окно, если был нажат Escape.
  * @param {object} evt - событие, считанное при нажатии клавиши
  */
-// При функцональном выражении линтер ругается на использование перед определением в ф-ции closeModal
 function modalKeydownHandler (evt) {
   if (isEscape(evt.code)) {
     evt.preventDefault();
     closeModal();
   }
 }
-
-// Кнопка закрытия окна
-closeBtn.addEventListener('click', closeModal);
 
 export { openModal };
