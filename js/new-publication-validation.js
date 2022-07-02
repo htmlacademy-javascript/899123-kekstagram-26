@@ -42,6 +42,11 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
+  if (hashtags.includes('')) {
+    validationErrorMessage = 'Только один пробел между хэштегами';
+    return false;
+  }
+
   if (!hashtags.every((hashtag) => hashtag.startsWith('#'))) {
     validationErrorMessage = 'Хэштег должен начинаться с #';
     return false;
@@ -52,13 +57,18 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
-  if (hashtags.includes('')) {
-    validationErrorMessage = 'Только один пробел между хэштегами';
+  if (hashtags.some((hashtag) => hashtag.length > maxHashtagLength)) {
+    validationErrorMessage = `Максимальная длина хэштега - ${maxHashtagLength} символов`;
     return false;
   }
 
-  if (hashtags.some((hashtag) => hashtag.length > maxHashtagLength)) {
-    validationErrorMessage = `Максимальная длина хэштега - ${maxHashtagLength} символов`;
+  if (!hashtags.every((hashtag) => hashtagRE.test(hashtag))) {
+    validationErrorMessage = 'Хэштег содержит запрещенные символы';
+    return false;
+  }
+
+  if ((new Set(hashtags.map((hashtag) => hashtag.toLowerCase()))).size !== hashtags.length) {
+    validationErrorMessage = 'Хэштеги не должны повторяться';
     return false;
   }
 
@@ -67,21 +77,7 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
-  return hashtags.every((hashtag, i) => {
-    if (!hashtagRE.test(hashtag)) {
-      validationErrorMessage = 'Хэштег содержит запрещенные символы';
-      return false;
-    }
-
-    for (++i; i < hashtags.length; i++) {
-      if (hashtag.toLowerCase() === hashtags[i].toLowerCase()) {
-        validationErrorMessage = 'Хэштеги не должны повторяться';
-        return false;
-      }
-    }
-
-    return true;
-  });
+  return true;
 };
 
 /**
