@@ -3,17 +3,17 @@ import { checkStringLength } from './utils.js';
 import '../pristine/pristine.min.js';
 
 const ValidatorSettings = {
-  hashtagRE: /^#[a-z,а-я,Ё,ё]{1,19}$/i,
-  maxHashtagsAmount: 5,
-  maxDescriptionLength: 140,
-  maxHashtagLength: 20
+  HASHTAG_RE: /^#[a-z,а-я,Ё,ё]{1,19}$/i,
+  MAX_HASHTAGS_AMOUNT: 5,
+  MAX_DESCRIPTION_LENGTH: 140,
+  MAX_HASHTAG_LENGTH: 20
 };
-const {hashtagRE, maxHashtagsAmount, maxDescriptionLength, maxHashtagLength} = ValidatorSettings;
+const {HASHTAG_RE, MAX_HASHTAGS_AMOUNT, MAX_DESCRIPTION_LENGTH, MAX_HASHTAG_LENGTH} = ValidatorSettings;
 Object.freeze(ValidatorSettings);
 
-const form = document.querySelector('#upload-select-image');
-const hashtagsInput = form.querySelector('.text__hashtags');
-const descriptionInput = form.querySelector('.text__description');
+const formElement = document.querySelector('#upload-select-image');
+const hashtagsInputElement = formElement.querySelector('.text__hashtags');
+const descriptionInputElement = formElement.querySelector('.text__description');
 
 // Валидация данных
 
@@ -57,12 +57,12 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
-  if (hashtags.some((hashtag) => hashtag.length > maxHashtagLength)) {
-    validationErrorMessage = `Максимальная длина хэштега - ${maxHashtagLength} символов`;
+  if (hashtags.some((hashtag) => hashtag.length > MAX_HASHTAG_LENGTH)) {
+    validationErrorMessage = `Максимальная длина хэштега - ${MAX_HASHTAG_LENGTH} символов`;
     return false;
   }
 
-  if (!hashtags.every((hashtag) => hashtagRE.test(hashtag))) {
+  if (!hashtags.every((hashtag) => HASHTAG_RE.test(hashtag))) {
     validationErrorMessage = 'Хэштег содержит запрещенные символы';
     return false;
   }
@@ -72,8 +72,8 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
-  if (hashtags.length > maxHashtagsAmount) {
-    validationErrorMessage = `Максимальное количество хэштегов - ${maxHashtagsAmount}`;
+  if (hashtags.length > MAX_HASHTAGS_AMOUNT) {
+    validationErrorMessage = `Максимальное количество хэштегов - ${MAX_HASHTAGS_AMOUNT}`;
     return false;
   }
 
@@ -85,14 +85,14 @@ const validateHashtags = (hashtagInputValue) => {
  * @param {string} - Текст, введенный в поле для комментария
  * @returns {boolean}
  */
-const validateDescription = (descriptionInputValue) => checkStringLength(descriptionInputValue, maxDescriptionLength);
+const validateDescription = (descriptionInputValue) => checkStringLength(descriptionInputValue, MAX_DESCRIPTION_LENGTH);
 
 /**
  *
  * @returns Объект для валидации формы новой публикации
  */
 const createUploadFormValidator = () => {
-  const uploadFormValidator = new Pristine(form, {
+  const uploadFormValidator = new Pristine(formElement, {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'is-invalid',
     successClass: 'is-valid',
@@ -101,8 +101,8 @@ const createUploadFormValidator = () => {
     errorTextClass: 'validation-error'
   });
 
-  uploadFormValidator.addValidator(hashtagsInput, validateHashtags, getErrorMessage);
-  uploadFormValidator.addValidator(descriptionInput, validateDescription, `Не более ${maxDescriptionLength} символов`);
+  uploadFormValidator.addValidator(hashtagsInputElement, validateHashtags, getErrorMessage);
+  uploadFormValidator.addValidator(descriptionInputElement, validateDescription, `Не более ${MAX_DESCRIPTION_LENGTH} символов`);
 
   return uploadFormValidator;
 };
