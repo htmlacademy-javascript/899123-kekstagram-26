@@ -2,7 +2,7 @@ import {
   getRandomPositiveInteger,
   getUniqueRandomPositiveInteger,
   getRandomArrayElement,
-} from './utils.js';
+} from '../utils.js';
 
 /**
  * Настройки генератора моков

@@ -686,19 +686,21 @@ main {
   width: 450px;
 
   margin: 0 auto;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   padding: 5px 10px;
 
   font-family: "Open Sans", "Arial", sans-serif;
   font-weight: 400;
   color: #000000;
 
-  border-radius: 5px;
+  border-radius: 0px;
+  outline: none;
 }
 
 .text__description {
   width: 450px;
   height: 100px;
+  resize: vertical;
 
   margin: 0 auto;
   padding: 15px 10px;
@@ -707,7 +709,31 @@ main {
   font-weight: 400;
   color: #000000;
 
-  border-radius: 5px;
+  border-radius: 0px;
+  outline: none;
+}
+
+.img-upload__field-wrapper {
+  width: 450px;
+
+  margin: 0 auto 20px;
+}
+
+.img-upload__field-wrapper.is-invalid .text__description {
+  color: red;
+  border-bottom: 4px solid red;
+}
+.img-upload__field-wrapper.is-valid .text__description {
+  border-bottom: 4px solid green;
+}
+
+.img-upload__field-wrapper.is-invalid .text__hashtags {
+  color: red;
+  border-bottom: 4px solid red;
+}
+
+.img-upload__field-wrapper.is-valid .text__hashtags {
+  border-bottom: 4px solid green;
 }
 
 
@@ -1407,4 +1433,13 @@ main {
 
 .hidden {
   display: none;
+}
+
+.validation-error {
+  color: red;
+
+  font-size: inherit;
+  font-weight: bolder;
+
+  text-align: left;
 }

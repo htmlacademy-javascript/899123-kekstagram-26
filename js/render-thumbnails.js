@@ -3,6 +3,10 @@ import { openModal } from './big-picture-mode.js';
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const picturesContainer = document.querySelector('.pictures');
 
+/**
+ * Отрисовывает миниатюры
+ * @param {array} publications - массив публикаций
+ */
 const renderThumbnails = (publications) => {
   const thumbnailsFragment = document.createDocumentFragment();
   publications.forEach((publication) => {

@@ -54,10 +54,17 @@ const getUniqueRandomPositiveInteger = (min, max) => {
  */
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
 
+/**
+ *
+ * @param {string} code - строка с названием клавиши
+ * @returns {boolean}
+ */
+const isEscape = (code) => (code === 'Escape' || code === 'Esc');
 
 export {
   getRandomPositiveInteger,
   checkStringLength,
   getUniqueRandomPositiveInteger,
-  getRandomArrayElement
+  getRandomArrayElement,
+  isEscape
 };
