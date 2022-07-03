@@ -1,5 +1,9 @@
 import { isEscape } from './utils.js';
 
+import {
+  addFileInputChangeHandler,
+  removeFileInputChangeHandler } from './new-publication/new-publication-form.js';
+
 const bodyElement = document.body;
 const modalWindowElement = document.querySelector('.big-picture');
 const bigPhotoElement = modalWindowElement.querySelector('.big-picture__img img');
@@ -66,7 +70,6 @@ const loadCommentsPortion = () => {
  */
 const fillModal = () => {
   loadedComments = 0;
-  commentsLoaderElement.addEventListener('click', loadCommentsPortion);
 
   bigPhotoElement.src = publication.url;
   likesCountElement.textContent = publication.likes;
@@ -81,6 +84,10 @@ const closeModal = () => {
   modalWindowElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
 
+  addFileInputChangeHandler();
+
+  closeBtnElement.addEventListener('click', closeModal);
+  commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
   document.removeEventListener('keydown', modalKeydownHandler);
   commentsContainerElement.innerHTML = '';
 };
@@ -93,6 +100,9 @@ const openModal = () => {
   modalWindowElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
 
+  removeFileInputChangeHandler();
+
+  commentsLoaderElement.addEventListener('click', loadCommentsPortion);
   closeBtnElement.addEventListener('click', closeModal);
   document.addEventListener('keydown', modalKeydownHandler);
   fillModal();
