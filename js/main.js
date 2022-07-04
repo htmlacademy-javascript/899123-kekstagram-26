@@ -6,7 +6,7 @@ import { addFileInputChangeHandler } from './new-publication/new-publication-for
 
 // main section
 
-const publications = generatePublications();
+const publications = generatePublications(25);
 
 renderThumbnails(publications);
 addFileInputChangeHandler();

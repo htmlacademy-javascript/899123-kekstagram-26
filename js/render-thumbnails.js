@@ -12,16 +12,24 @@ const renderThumbnails = (publications) => {
   publications.forEach((publication) => {
     const newThumbnail = thumbnailTemplateElement.cloneNode(true);
 
+    newThumbnail.dataset.id = publication.id;
     newThumbnail.querySelector('.picture__img').src = publication.url;
     newThumbnail.querySelector('.picture__likes').textContent = publication.likes;
     newThumbnail.querySelector('.picture__comments').textContent = publication.comments.length;
-
-    newThumbnail.addEventListener('click', () => initPublication(publication));
 
     thumbnailsFragment.appendChild(newThumbnail);
   });
 
   picturesContainerElement.appendChild(thumbnailsFragment);
+  picturesContainerElement.addEventListener('click', (evt) => thumbnailsContainerClickHandler(evt, publications));
 };
+
+// Обработчики
+
+function thumbnailsContainerClickHandler (evt, publications) {
+  if (evt.target.closest('.picture') !== null) {
+    initPublication(publications.find((publication) => publication.id === Number(evt.target.closest('.picture').dataset.id)));
+  }
+}
 
 export { renderThumbnails };

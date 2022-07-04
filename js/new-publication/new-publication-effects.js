@@ -1,5 +1,3 @@
-import '../../nouislider/nouislider.js';
-
 const FiltersSettings = {
   chrome: {
     slider: {
