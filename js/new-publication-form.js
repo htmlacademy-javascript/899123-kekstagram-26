@@ -2,22 +2,22 @@ import { isEscape } from './utils.js';
 
 import { createUploadFormValidator } from './new-publication-validation.js';
 
-const body = document.body;
-const form = document.querySelector('#upload-select-image');
-const fileInput = form.querySelector('#upload-file');
-const uploadForm = document.querySelector('.img-upload__overlay');
-const cancelBtn = uploadForm.querySelector('#upload-cancel');
+const bodyElement = document.body;
+const formElement = document.querySelector('#upload-select-image');
+const fileInputElement = formElement.querySelector('#upload-file');
+const uploadFormElement = document.querySelector('.img-upload__overlay');
+const cancelBtnElement = uploadFormElement.querySelector('#upload-cancel');
 
 let uploadFormValidator;
 
 // Управление формой
 
 const openForm = () => {
-  uploadForm.classList.remove('hidden');
-  body.classList.add('modal-open');
+  uploadFormElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
 
-  form.addEventListener('submit', formSubmitHandler);
-  cancelBtn.addEventListener('click', closeForm);
+  formElement.addEventListener('submit', formSubmitHandler);
+  cancelBtnElement.addEventListener('click', closeForm);
   document.addEventListener('keydown', formKeydownHandler);
 
   uploadFormValidator = createUploadFormValidator();
@@ -28,19 +28,24 @@ const openForm = () => {
  * @param {boolean} clear - Требуется ли очистить форму?
  */
 function closeForm (сlear = true) {
-  uploadForm.classList.add('hidden');
-  body.classList.remove('modal-open');
+  uploadFormElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
 
   if (сlear) {
-    form.reset();
+    formElement.reset();
   }
 
-  form.removeEventListener('submit', formSubmitHandler);
-  cancelBtn.removeEventListener('click', closeForm);
+  formElement.removeEventListener('submit', formSubmitHandler);
+  cancelBtnElement.removeEventListener('click', closeForm);
   document.removeEventListener('keydown', formKeydownHandler);
 
   uploadFormValidator.destroy();
 }
+
+const addFileInputChangeHandler = () => {
+  // TODO: Открывать форму только если был выбран файл
+  fileInputElement.addEventListener('change', openForm);
+};
 
 // Обработчики для формы
 
@@ -68,9 +73,4 @@ function formKeydownHandler (evt) {
   }
 }
 
-function fileInputHandler () {
-  // TODO: Открывать форму только если был выбран файл
-  fileInput.addEventListener('change', openForm);
-}
-
-export { fileInputHandler };
+export { addFileInputChangeHandler };

@@ -14,7 +14,7 @@ const Options = {
   URL_NUMBERS_RANGE: [1, 25],
   AVATAR_NUMBERS_RANGE: [1, 6],
   LIKES_AMOUNT_RANGE: [15, 200],
-  COMMENTS_AMOUNT_RANGE: [1, 2],
+  COMMENTS_AMOUNT_RANGE: [1, 15],
 };
 Object.freeze(Options);
 

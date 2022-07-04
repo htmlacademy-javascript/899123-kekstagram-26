@@ -1,25 +1,27 @@
 import { isEscape } from './utils.js';
 
-const body = document.body;
-const modal = document.querySelector('.big-picture');
-const photo = modal.querySelector('.big-picture__img img');
-const likes = modal.querySelector('.likes-count');
-const description = modal.querySelector('.social__caption');
+const bodyElement = document.body;
+const modalWindowElement = document.querySelector('.big-picture');
+const bigPhotoElement = modalWindowElement.querySelector('.big-picture__img img');
+const likesCountElement = modalWindowElement.querySelector('.likes-count');
+const descriptionElement = modalWindowElement.querySelector('.social__caption');
 
-const commentsContainer = modal.querySelector('.social__comments');
-const comments = commentsContainer.querySelectorAll('.social__comment');
-const commentsAmount = modal.querySelector('.comments-count');
-const commentsLoader = modal.querySelector('.comments-loader');
-const commentsCount = modal.querySelector('.social__comment-count');
+const commentsContainerElement = modalWindowElement.querySelector('.social__comments');
+const commentsElement = commentsContainerElement.querySelectorAll('.social__comment');
+const commentsCountElement = modalWindowElement.querySelector('.social__comment-count');
+const commentsAmountElement = commentsCountElement.querySelector('.comments-count');
+const loadedCommentsAmountElement = commentsCountElement.querySelector('.loaded-comments-count');
+const commentsLoaderElement = modalWindowElement.querySelector('.comments-loader');
 
-const closeBtn = modal.querySelector('#picture-cancel');
+const closeBtnElement = modalWindowElement.querySelector('#picture-cancel');
 
-// TODO: Убрать временное отключение
-commentsCount.classList.add('hidden');
-commentsLoader.classList.add('hidden');
+const COMMENTS_PORTION_LENGTH = 5;
 
-const commentTemplate = comments[0];
-comments.forEach((comment) => comment.remove());
+let publication;
+let loadedComments = 0;
+
+const commentTemplate = commentsElement[0];
+commentsElement.forEach((comment) => comment.remove());
 
 // Наполнение окна
 
@@ -38,42 +40,67 @@ const fillComments = (commentsList) => {
     commentsFragment.appendChild(newComment);
   });
 
-  commentsContainer.appendChild(commentsFragment);
+  commentsContainerElement.appendChild(commentsFragment);
+};
+
+const loadCommentsPortion = () => {
+  fillComments(publication.comments.slice(loadedComments, loadedComments + COMMENTS_PORTION_LENGTH));
+
+  loadedComments += COMMENTS_PORTION_LENGTH;
+
+  if (publication.comments.length > loadedComments) {
+    commentsLoaderElement.classList.remove('hidden');
+  } else {
+    commentsLoaderElement.classList.add('hidden');
+    commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
+
+    loadedComments = publication.comments.length;
+  }
+
+  loadedCommentsAmountElement.textContent = loadedComments;
 };
 
 /**
  * Заполняет модальное окно информацией из выбранной публикации
  * @param {object} publication - Полная информация об одной публикации
  */
-const fillModal = (publication) => {
-  photo.src = publication.url;
-  likes.textContent = publication.likes;
-  commentsAmount.textContent = publication.comments.length;
-  fillComments(publication.comments);
-  description.textContent = publication.description;
+const fillModal = () => {
+  loadedComments = 0;
+  commentsLoaderElement.addEventListener('click', loadCommentsPortion);
+
+  bigPhotoElement.src = publication.url;
+  likesCountElement.textContent = publication.likes;
+  commentsAmountElement.textContent = publication.comments.length;
+  loadCommentsPortion();
+  descriptionElement.textContent = publication.description;
 };
 
 // Управление окном
 
 const closeModal = () => {
-  modal.classList.add('hidden');
-  body.classList.remove('modal-open');
+  modalWindowElement.classList.add('hidden');
+  bodyElement.classList.remove('modal-open');
 
   document.removeEventListener('keydown', modalKeydownHandler);
-  commentsContainer.innerHTML = '';
+  commentsContainerElement.innerHTML = '';
 };
 
 /**
- * Открывает окно
+ *
  * @param {object} publication - Полная информация об одной публикации
  */
-const openModal = (publication) => {
-  modal.classList.remove('hidden');
-  body.classList.add('modal-open');
+const openModal = () => {
+  modalWindowElement.classList.remove('hidden');
+  bodyElement.classList.add('modal-open');
 
-  closeBtn.addEventListener('click', closeModal);
+  closeBtnElement.addEventListener('click', closeModal);
   document.addEventListener('keydown', modalKeydownHandler);
-  fillModal(publication);
+  fillModal();
+};
+
+const initPublication = (data) => {
+  publication = data;
+  openModal();
 };
 
 // Обработчики
@@ -89,4 +116,4 @@ function modalKeydownHandler (evt) {
   }
 }
 
-export { openModal };
+export { initPublication };

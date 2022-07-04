@@ -1,25 +1,25 @@
 import { isEscape } from './utils.js';
 
-const body = document.body;
-const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const closeErrorMessageBtn = errorMessage.querySelector('.error__button');
+const bodyElement = document.body;
+const errorMessageElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const closeErrorMessageBtnElement = errorMessageElement.querySelector('.error__button');
 
 // Управление окном ошибки загрузки публикации
 
 const closeUploadErrorMessage = () => {
-  errorMessage.remove();
+  errorMessageElement.remove();
 
-  closeErrorMessageBtn.removeEventListener('click', closeUploadErrorMessage);
+  closeErrorMessageBtnElement.removeEventListener('click', closeUploadErrorMessage);
   document.removeEventListener('keydown', errorMessageKeydownHandler);
   document.removeEventListener('click', errorMessageClickHandler);
 };
 
 const showUploadErrorMessage = () => {
-  closeErrorMessageBtn.addEventListener('click', closeUploadErrorMessage);
+  closeErrorMessageBtnElement.addEventListener('click', closeUploadErrorMessage);
   document.addEventListener('keydown', errorMessageKeydownHandler);
   document.addEventListener('click', errorMessageClickHandler);
 
-  body.appendChild(errorMessage);
+  bodyElement.appendChild(errorMessageElement);
 };
 
 // Обработчики для окна ошибки
