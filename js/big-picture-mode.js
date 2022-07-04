@@ -2,7 +2,13 @@ import { isEscape } from './utils.js';
 
 import {
   addFileInputChangeHandler,
-  removeFileInputChangeHandler } from './new-publication/new-publication-form.js';
+  removeFileInputChangeHandler,
+} from './new-publication/new-publication-form.js';
+
+const COMMENTS_PORTION_LENGTH = 5;
+
+let publication;
+let loadedComments = 0;
 
 const bodyElement = document.body;
 const modalWindowElement = document.querySelector('.big-picture');
@@ -18,11 +24,6 @@ const loadedCommentsAmountElement = commentsCountElement.querySelector('.loaded-
 const commentsLoaderElement = modalWindowElement.querySelector('.comments-loader');
 
 const closeBtnElement = modalWindowElement.querySelector('#picture-cancel');
-
-const COMMENTS_PORTION_LENGTH = 5;
-
-let publication;
-let loadedComments = 0;
 
 const commentTemplate = commentsElement[0];
 commentsElement.forEach((comment) => comment.remove());

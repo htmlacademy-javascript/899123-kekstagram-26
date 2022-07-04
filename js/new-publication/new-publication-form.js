@@ -39,7 +39,6 @@ const openUploadForm = () => {
   createSlider();
   createUploadFormValidator();
 };
-openUploadForm();
 
 /**
  *
