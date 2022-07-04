@@ -99,7 +99,12 @@ const createPublication = () => ({
   comments: Array.from({length: getRandomPositiveInteger(...Options.COMMENTS_AMOUNT_RANGE)}, createComments),
 });
 
-const generatePublications = () => Array.from({length: Options.GENERATED_PUBLICATIONS_AMOUNT}, createPublication);
+/**
+ *
+ * @param {integer} amount - количество публикаций
+ * @returns - массив сгенерированных публикаций
+ */
+const generatePublications = (amount = Options.GENERATED_PUBLICATIONS_AMOUNT) => Array.from({length: amount}, createPublication);
 export {
   generatePublications
 };

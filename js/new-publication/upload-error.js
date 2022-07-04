@@ -11,13 +11,13 @@ const closeUploadErrorMessage = () => {
 
   closeErrorMessageBtnElement.removeEventListener('click', closeUploadErrorMessage);
   document.removeEventListener('keydown', errorMessageKeydownHandler);
-  document.removeEventListener('click', errorMessageClickHandler);
+  document.removeEventListener('click', errorMessageOutsideClickHandler);
 };
 
 const showUploadErrorMessage = () => {
   closeErrorMessageBtnElement.addEventListener('click', closeUploadErrorMessage);
   document.addEventListener('keydown', errorMessageKeydownHandler);
-  document.addEventListener('click', errorMessageClickHandler);
+  document.addEventListener('click', errorMessageOutsideClickHandler);
 
   bodyElement.appendChild(errorMessageElement);
 };
@@ -28,7 +28,7 @@ const showUploadErrorMessage = () => {
  * Закрывает сообщение при клики на свободное пространство
  * @param {object} evt - event
  */
-function errorMessageClickHandler(evt) {
+function errorMessageOutsideClickHandler(evt) {
   if (evt.target.classList.contains('error')) {
     evt.preventDefault();
     closeUploadErrorMessage();

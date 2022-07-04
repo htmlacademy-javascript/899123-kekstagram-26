@@ -1,6 +1,18 @@
-import { isEscape } from './utils.js';
+import { isEscape } from '../utils.js';
 
-import { createUploadFormValidator } from './new-publication-validation.js';
+import {
+  createUploadFormValidator,
+  validateUploadForm,
+  destroyUploadFormValidator,
+} from './new-publication-validation.js';
+
+import {
+  changeScaleClickHandler,
+  effectsListClickHandler,
+  createSlider,
+  destroySlider,
+  resetPreviewPhoto,
+} from './new-publication-effects.js';
 
 const bodyElement = document.body;
 const formElement = document.querySelector('#upload-select-image');
@@ -8,19 +20,24 @@ const fileInputElement = formElement.querySelector('#upload-file');
 const uploadFormElement = document.querySelector('.img-upload__overlay');
 const cancelBtnElement = uploadFormElement.querySelector('#upload-cancel');
 
-let uploadFormValidator;
+const scaleElement = document.querySelector('.scale');
+const effectsListElement = document.querySelector('.effects__list');
 
 // Управление формой
 
-const openForm = () => {
+const openUploadForm = () => {
   uploadFormElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
+
+  scaleElement.addEventListener('click', changeScaleClickHandler);
+  effectsListElement.addEventListener('click', effectsListClickHandler);
 
   formElement.addEventListener('submit', formSubmitHandler);
   cancelBtnElement.addEventListener('click', closeForm);
   document.addEventListener('keydown', formKeydownHandler);
 
-  uploadFormValidator = createUploadFormValidator();
+  createSlider();
+  createUploadFormValidator();
 };
 
 /**
@@ -35,17 +52,17 @@ function closeForm (сlear = true) {
     formElement.reset();
   }
 
+  scaleElement.removeEventListener('click', changeScaleClickHandler);
+  effectsListElement.removeEventListener('click', effectsListClickHandler);
+  resetPreviewPhoto();
+
   formElement.removeEventListener('submit', formSubmitHandler);
   cancelBtnElement.removeEventListener('click', closeForm);
   document.removeEventListener('keydown', formKeydownHandler);
 
-  uploadFormValidator.destroy();
+  destroySlider();
+  destroyUploadFormValidator();
 }
-
-const addFileInputChangeHandler = () => {
-  // TODO: Открывать форму только если был выбран файл
-  fileInputElement.addEventListener('change', openForm);
-};
 
 // Обработчики для формы
 
@@ -55,7 +72,7 @@ const addFileInputChangeHandler = () => {
  */
 function formSubmitHandler (evt) {
   evt.preventDefault();
-  if (uploadFormValidator.validate()) {
+  if (validateUploadForm()) {
     closeForm();
   }
 }
@@ -73,4 +90,9 @@ function formKeydownHandler (evt) {
   }
 }
 
-export { addFileInputChangeHandler };
+const addFileInputChangeHandler = () => fileInputElement.addEventListener('change', openUploadForm);
+
+const removeFileInputChangeHandler = () => fileInputElement.removeEventListener('change', openUploadForm);
+
+
+export { addFileInputChangeHandler, removeFileInputChangeHandler };

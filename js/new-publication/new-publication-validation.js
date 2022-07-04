@@ -1,9 +1,7 @@
-import { checkStringLength } from './utils.js';
-
-import '../pristine/pristine.min.js';
+import { checkStringLength } from '../utils.js';
 
 const ValidatorSettings = {
-  HASHTAG_RE: /^#[a-z,а-я,Ё,ё]{1,19}$/i,
+  HASHTAG_RE: /^#[a-z,а-я,Ё,ё,0-9]{1,19}$/i,
   MAX_HASHTAGS_AMOUNT: 5,
   MAX_DESCRIPTION_LENGTH: 140,
   MAX_HASHTAG_LENGTH: 20
@@ -17,6 +15,7 @@ const descriptionInputElement = formElement.querySelector('.text__description');
 
 // Валидация данных
 
+let uploadFormValidator;
 let validationErrorMessage;
 
 /**
@@ -87,12 +86,14 @@ const validateHashtags = (hashtagInputValue) => {
  */
 const validateDescription = (descriptionInputValue) => checkStringLength(descriptionInputValue, MAX_DESCRIPTION_LENGTH);
 
+const validateUploadForm = () => uploadFormValidator.validate();
+
 /**
  *
  * @returns Объект для валидации формы новой публикации
  */
 const createUploadFormValidator = () => {
-  const uploadFormValidator = new Pristine(formElement, {
+  uploadFormValidator = new Pristine(formElement, {
     classTo: 'img-upload__field-wrapper',
     errorClass: 'is-invalid',
     successClass: 'is-valid',
@@ -107,4 +108,6 @@ const createUploadFormValidator = () => {
   return uploadFormValidator;
 };
 
-export { createUploadFormValidator};
+const destroyUploadFormValidator = () => uploadFormValidator.destroy();
+
+export { createUploadFormValidator, validateUploadForm, destroyUploadFormValidator };
