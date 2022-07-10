@@ -1411,6 +1411,10 @@ main {
     -ms-grid-row-span: 3;
     grid-row: 1 / span 3;
   }
+
+  .get-data-fail {
+    width: 600px !important;
+  }
 }
 
 .visually-hidden {
