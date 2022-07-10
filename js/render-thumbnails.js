@@ -21,15 +21,22 @@ const renderThumbnails = (publications) => {
   });
 
   picturesContainerElement.appendChild(thumbnailsFragment);
-  picturesContainerElement.addEventListener('click', (evt) => thumbnailsContainerClickHandler(evt, publications));
+  picturesContainerElement.addEventListener('click', thumbnailsContainerClickHandler(publications));
 };
 
 // Обработчики
 
-function thumbnailsContainerClickHandler (evt, publications) {
-  if (evt.target.closest('.picture') !== null) {
-    initPublication(publications.find((publication) => publication.id === Number(evt.target.closest('.picture').dataset.id)));
-  }
+/**
+ *
+ * @param {array} publications - массив публикаций
+ * @returns функция-обработчик события клик на миниатюру
+ */
+function thumbnailsContainerClickHandler (publications) {
+  return function(evt) {
+    if (evt.target.closest('.picture') !== null) {
+      initPublication(publications.find((publication) => publication.id === Number(evt.target.closest('.picture').dataset.id)));
+    }
+  };
 }
 
 export { renderThumbnails };
