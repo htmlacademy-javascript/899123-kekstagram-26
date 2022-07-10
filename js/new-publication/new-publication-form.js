@@ -1,18 +1,24 @@
 import { isEscape } from '../utils.js';
 
 import {
-  createUploadFormValidator,
+  showUploadStatusMessage,
+} from '../new-publication/upload-status-modal.js';
+
+import {
   validateUploadForm,
-  destroyUploadFormValidator,
+  resetUploadFormValidator,
 } from './new-publication-validation.js';
 
 import {
   changeScaleClickHandler,
   effectsListClickHandler,
-  createSlider,
-  destroySlider,
   resetPreviewPhoto,
+  hideSlider,
 } from './new-publication-effects.js';
+
+import { sendUploadFormData } from '../web-api/ajax-requests.js';
+
+// Переменные
 
 const bodyElement = document.body;
 const formElement = document.querySelector('#upload-select-image');
@@ -20,12 +26,15 @@ const fileInputElement = formElement.querySelector('#upload-file');
 const uploadFormElement = document.querySelector('.img-upload__overlay');
 const cancelBtnElement = uploadFormElement.querySelector('#upload-cancel');
 
+const uploadSubmitBtnElement = formElement.querySelector('#upload-submit');
+
 const scaleElement = document.querySelector('.scale');
 const effectsListElement = document.querySelector('.effects__list');
 
 // Управление формой
 
 const openUploadForm = () => {
+  uploadSubmitBtnElement.disabled = false;
   uploadFormElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
 
@@ -35,33 +44,31 @@ const openUploadForm = () => {
   formElement.addEventListener('submit', formSubmitHandler);
   cancelBtnElement.addEventListener('click', closeForm);
   document.addEventListener('keydown', formKeydownHandler);
-
-  createSlider();
-  createUploadFormValidator();
 };
 
 /**
  *
  * @param {boolean} clear - Требуется ли очистить форму?
  */
-function closeForm (сlear = true) {
+function closeForm (isClearForm = true) {
   uploadFormElement.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
 
-  if (сlear) {
+  if (isClearForm) {
+    resetUploadFormValidator();
+    resetPreviewPhoto();
+    hideSlider();
     formElement.reset();
   }
 
+  fileInputElement.value = '';
+
   scaleElement.removeEventListener('click', changeScaleClickHandler);
   effectsListElement.removeEventListener('click', effectsListClickHandler);
-  resetPreviewPhoto();
 
   formElement.removeEventListener('submit', formSubmitHandler);
   cancelBtnElement.removeEventListener('click', closeForm);
   document.removeEventListener('keydown', formKeydownHandler);
-
-  destroySlider();
-  destroyUploadFormValidator();
 }
 
 // Обработчики для формы
@@ -70,10 +77,16 @@ function closeForm (сlear = true) {
  * Проверяет заполнение формы. Отправляет, если все соответствует.
  * @param {object} evt - event
  */
-function formSubmitHandler (evt) {
+async function formSubmitHandler (evt) {
   evt.preventDefault();
   if (validateUploadForm()) {
-    closeForm();
+    uploadSubmitBtnElement.disabled = true;
+    uploadSubmitBtnElement.textContent = 'Ваша фотография публикуется';
+
+    const clear = await sendUploadFormData(new FormData(formElement), showUploadStatusMessage);
+    closeForm(clear);
+
+    uploadSubmitBtnElement.textContent = 'Опубликовать';
   }
 }
 
@@ -94,5 +107,8 @@ const addFileInputChangeHandler = () => fileInputElement.addEventListener('chang
 
 const removeFileInputChangeHandler = () => fileInputElement.removeEventListener('change', openUploadForm);
 
-
-export { addFileInputChangeHandler, removeFileInputChangeHandler };
+export {
+  addFileInputChangeHandler,
+  removeFileInputChangeHandler,
+  closeForm,
+};
