@@ -5,12 +5,12 @@ import { checkStringLength } from '../utils.js';
 const ValidatorSettings = {
   HASHTAG_RE: /^#[a-z,а-я,Ё,ё,0-9]{1,19}$/i,
   MAX_HASHTAGS_AMOUNT: 5,
+  MAX_HASHTAG_LENGTH: 20,
   MAX_DESCRIPTION_LENGTH: 140,
-  MAX_HASHTAG_LENGTH: 20
 };
-const {HASHTAG_RE, MAX_HASHTAGS_AMOUNT, MAX_DESCRIPTION_LENGTH, MAX_HASHTAG_LENGTH} = ValidatorSettings;
-Object.freeze(ValidatorSettings);
+const {HASHTAG_RE, MAX_HASHTAGS_AMOUNT, MAX_HASHTAG_LENGTH, MAX_DESCRIPTION_LENGTH, } = ValidatorSettings;
 
+const DESCRIPTION_VALIDATOR_ERROR_MESSAGE = `Не более ${MAX_DESCRIPTION_LENGTH} символов`;
 let uploadFormValidator;
 let validationErrorMessage;
 
@@ -27,7 +27,7 @@ const submitBtnElement = formElement.querySelector('#upload-submit');
  *
  * @returns {string} актуальная ошибка валидации
  */
-const getErrorMessage = () => validationErrorMessage;
+const getHashtagsValidatorErrorMessage = () => validationErrorMessage;
 
 /**
  * Проверяет строку "#Хэштег"
@@ -114,8 +114,8 @@ const createUploadFormValidator = () => {
     errorTextClass: 'validation-error'
   });
 
-  uploadFormValidator.addValidator(hashtagsInputElement, validateHashtags, getErrorMessage);
-  uploadFormValidator.addValidator(descriptionInputElement, validateDescription, `Не более ${MAX_DESCRIPTION_LENGTH} символов`);
+  uploadFormValidator.addValidator(hashtagsInputElement, validateHashtags, getHashtagsValidatorErrorMessage);
+  uploadFormValidator.addValidator(descriptionInputElement, validateDescription, DESCRIPTION_VALIDATOR_ERROR_MESSAGE);
 
   return uploadFormValidator;
 };

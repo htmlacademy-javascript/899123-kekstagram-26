@@ -21,7 +21,7 @@ const renderThumbnails = (publications) => {
   });
 
   picturesContainerElement.appendChild(thumbnailsFragment);
-  picturesContainerElement.addEventListener('click', thumbnailsContainerClickHandler(publications));
+  picturesContainerElement.addEventListener('click', getThumbnailsContainerClickHandler(publications));
 };
 
 // Обработчики
@@ -31,7 +31,7 @@ const renderThumbnails = (publications) => {
  * @param {array} publications - массив публикаций
  * @returns функция-обработчик события клик на миниатюру
  */
-function thumbnailsContainerClickHandler (publications) {
+function getThumbnailsContainerClickHandler (publications) {
   return function(evt) {
     if (evt.target.closest('.picture') !== null) {
       initPublication(publications.find((publication) => publication.id === Number(evt.target.closest('.picture').dataset.id)));

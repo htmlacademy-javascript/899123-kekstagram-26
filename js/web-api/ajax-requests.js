@@ -3,7 +3,6 @@ const Settings = {
   sendTo: 'https://26.javascript.pages.academy/kekstagram',
 };
 const {getFrom, sendTo} = Settings;
-Object.freeze(Settings);
 
 /**
  * Получает данные с сервера
@@ -28,12 +27,11 @@ const getData = (successHandler, errorHandler) => {
 /**
  * Отправляет данные на сервер
  * @param {*} body - данные, которые будут отправлены
- * @param {function} cb - колбэк после выполнения запроса
- * @returns {Promise} resolve(isSuccess)
+ * @param {function} successHandler - колбэк для успешной отправки
+ * @param {function} errorHandler - колбэк для отправки с ошибкой
  */
-const sendUploadFormData = (body, cb) => {
-  let isSuccess = true;
-  return fetch(
+const sendUploadFormData = (body, successHandler, errorHandler) => {
+  fetch(
     sendTo,
     {
       method: 'POST',
@@ -42,14 +40,12 @@ const sendUploadFormData = (body, cb) => {
   )
     .then((response) => {
       if (!response.ok) {
-        isSuccess = false;
         throw new Error (response.statusText);
       } else {
-        cb(isSuccess);
+        successHandler();
       }
     })
-    .catch(() => cb(isSuccess))
-    .then(() => isSuccess);
+    .catch(() => errorHandler());
 };
 
 export {

@@ -33,7 +33,7 @@ const effectsListElement = document.querySelector('.effects__list');
 
 // Управление формой
 
-const openUploadForm = () => {
+const openForm = () => {
   uploadSubmitBtnElement.disabled = false;
   uploadFormElement.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
@@ -73,18 +73,27 @@ function closeForm (isClearForm = true) {
 
 // Обработчики для формы
 
+const successUploadHandler = () => {
+  showUploadStatusMessage(true);
+  closeForm(true);
+};
+
+const failureUploadHandler = () => {
+  showUploadStatusMessage(false);
+  closeForm(false);
+};
+
 /**
  * Проверяет заполнение формы. Отправляет, если все соответствует.
  * @param {object} evt - event
  */
-async function formSubmitHandler (evt) {
+function formSubmitHandler (evt) {
   evt.preventDefault();
   if (validateUploadForm()) {
     uploadSubmitBtnElement.disabled = true;
     uploadSubmitBtnElement.textContent = 'Ваша фотография публикуется';
 
-    const clear = await sendUploadFormData(new FormData(formElement), showUploadStatusMessage);
-    closeForm(clear);
+    sendUploadFormData(new FormData(formElement), successUploadHandler, failureUploadHandler);
 
     uploadSubmitBtnElement.textContent = 'Опубликовать';
   }
@@ -103,9 +112,9 @@ function formKeydownHandler (evt) {
   }
 }
 
-const addFileInputChangeHandler = () => fileInputElement.addEventListener('change', openUploadForm);
+const addFileInputChangeHandler = () => fileInputElement.addEventListener('change', openForm);
 
-const removeFileInputChangeHandler = () => fileInputElement.removeEventListener('change', openUploadForm);
+const removeFileInputChangeHandler = () => fileInputElement.removeEventListener('change', openForm);
 
 export {
   addFileInputChangeHandler,

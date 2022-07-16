@@ -107,7 +107,6 @@ const ScaleSettings = {
   PREVIEW_MAX_SCALE: 100,
 };
 const {IMAGE_SCALE_STEP, PREVIEW_MIN_SCALE, PREVIEW_MAX_SCALE} = ScaleSettings;
-Object.freeze(ScaleSettings);
 
 let currentEffect = 'none';
 

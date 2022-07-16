@@ -14,6 +14,7 @@ const ErrorMessageStyles = {
   'color': 'white',
   'background-color': 'red',
 };
+Object.freeze(ErrorMessageStyles);
 
 const showFailMessage = () => {
   const element = document.createElement('a');
