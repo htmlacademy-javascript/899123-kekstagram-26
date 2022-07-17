@@ -8,6 +8,8 @@ const picturesContainerElement = document.querySelector('.pictures');
  * @param {array} publications - массив публикаций
  */
 const renderThumbnails = (publications) => {
+  picturesContainerElement.querySelectorAll('.picture').forEach((thumbnail) => thumbnail.remove());
+
   const thumbnailsFragment = document.createDocumentFragment();
   publications.forEach((publication) => {
     const newThumbnail = thumbnailTemplateElement.cloneNode(true);
