@@ -1,28 +1,33 @@
 import { checkStringLength } from '../utils.js';
 
+// Переменные
+
 const ValidatorSettings = {
   HASHTAG_RE: /^#[a-z,а-я,Ё,ё,0-9]{1,19}$/i,
   MAX_HASHTAGS_AMOUNT: 5,
+  MAX_HASHTAG_LENGTH: 20,
   MAX_DESCRIPTION_LENGTH: 140,
-  MAX_HASHTAG_LENGTH: 20
 };
-const {HASHTAG_RE, MAX_HASHTAGS_AMOUNT, MAX_DESCRIPTION_LENGTH, MAX_HASHTAG_LENGTH} = ValidatorSettings;
-Object.freeze(ValidatorSettings);
+const {HASHTAG_RE, MAX_HASHTAGS_AMOUNT, MAX_HASHTAG_LENGTH, MAX_DESCRIPTION_LENGTH, } = ValidatorSettings;
+
+const DESCRIPTION_VALIDATOR_ERROR_MESSAGE = `Не более ${MAX_DESCRIPTION_LENGTH} символов`;
+let uploadFormValidator;
+let validationErrorMessage;
+
+// Элементы DOM
 
 const formElement = document.querySelector('#upload-select-image');
 const hashtagsInputElement = formElement.querySelector('.text__hashtags');
 const descriptionInputElement = formElement.querySelector('.text__description');
+const submitBtnElement = formElement.querySelector('#upload-submit');
 
 // Валидация данных
-
-let uploadFormValidator;
-let validationErrorMessage;
 
 /**
  *
  * @returns {string} актуальная ошибка валидации
  */
-const getErrorMessage = () => validationErrorMessage;
+const getHashtagsValidatorErrorMessage = () => validationErrorMessage;
 
 /**
  * Проверяет строку "#Хэштег"
@@ -32,9 +37,13 @@ const getErrorMessage = () => validationErrorMessage;
 const validateHashtags = (hashtagInputValue) => {
   const hashtags = hashtagInputValue.split(' ');
 
+  submitBtnElement.disabled = false;
+
   if (hashtagInputValue === '') {
     return true;
   }
+
+  submitBtnElement.disabled = true;
 
   if (hashtagInputValue.endsWith(' ')) {
     validationErrorMessage = 'Хэштег не должен заканчиваться пробелом';
@@ -76,6 +85,7 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
+  submitBtnElement.disabled = false;
   return true;
 };
 
@@ -87,6 +97,8 @@ const validateHashtags = (hashtagInputValue) => {
 const validateDescription = (descriptionInputValue) => checkStringLength(descriptionInputValue, MAX_DESCRIPTION_LENGTH);
 
 const validateUploadForm = () => uploadFormValidator.validate();
+
+const resetUploadFormValidator = () => uploadFormValidator.reset();
 
 /**
  *
@@ -102,12 +114,14 @@ const createUploadFormValidator = () => {
     errorTextClass: 'validation-error'
   });
 
-  uploadFormValidator.addValidator(hashtagsInputElement, validateHashtags, getErrorMessage);
-  uploadFormValidator.addValidator(descriptionInputElement, validateDescription, `Не более ${MAX_DESCRIPTION_LENGTH} символов`);
+  uploadFormValidator.addValidator(hashtagsInputElement, validateHashtags, getHashtagsValidatorErrorMessage);
+  uploadFormValidator.addValidator(descriptionInputElement, validateDescription, DESCRIPTION_VALIDATOR_ERROR_MESSAGE);
 
   return uploadFormValidator;
 };
+createUploadFormValidator();
 
-const destroyUploadFormValidator = () => uploadFormValidator.destroy();
-
-export { createUploadFormValidator, validateUploadForm, destroyUploadFormValidator };
+export {
+  validateUploadForm,
+  resetUploadFormValidator,
+};

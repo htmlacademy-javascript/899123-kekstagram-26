@@ -66,5 +66,5 @@ export {
   checkStringLength,
   getUniqueRandomPositiveInteger,
   getRandomArrayElement,
-  isEscape
+  isEscape,
 };

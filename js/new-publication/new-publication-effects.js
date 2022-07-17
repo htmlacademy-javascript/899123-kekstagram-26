@@ -101,10 +101,16 @@ const FiltersSettings = {
   },
 };
 
-const IMAGE_SCALE_STEP = 25;
-const PREVIEW_MIN_SCALE = 25;
-const PREVIEW_MAX_SCALE = 100;
+const ScaleSettings = {
+  IMAGE_SCALE_STEP: 25,
+  PREVIEW_MIN_SCALE: 25,
+  PREVIEW_MAX_SCALE: 100,
+};
+const {IMAGE_SCALE_STEP, PREVIEW_MIN_SCALE, PREVIEW_MAX_SCALE} = ScaleSettings;
+
 let currentEffect = 'none';
+
+// Элементы DOM
 
 const imgPreviewElement = document.querySelector('.img-upload__preview img');
 
@@ -116,6 +122,10 @@ const effectsSliderElement = document.querySelector('.effect-level__slider');
 
 // Размер
 
+/**
+ *
+ * @param {integer} step - значение в процентах, на которое будет изменен текущий масштаб
+ */
 const changeScale = (step) => {
   let scale = parseInt(scaleInputElement.value.slice(0, -1), 10);
 
@@ -126,6 +136,8 @@ const changeScale = (step) => {
   imgPreviewElement.style.transform = `scale(${scale}%)`;
   scaleInputElement.value = `${scale}%`;
 };
+
+//
 
 const resetPreviewPhoto = () => {
   currentEffect = 'none';
@@ -145,8 +157,6 @@ const hideSlider = () => effectsSliderElement.classList.add('hidden');
 
 const showSlider = () => effectsSliderElement.classList.remove('hidden');
 
-const destroySlider = () => effectsSliderElement.noUiSlider.destroy();
-
 const createSlider = () => {
   noUiSlider.create(effectsSliderElement, {
     range: {
@@ -165,6 +175,7 @@ const createSlider = () => {
   sliderUpdateHandler();
   hideSlider();
 };
+createSlider();
 
 // Обработчики
 
@@ -202,4 +213,9 @@ function sliderUpdateHandler () {
   });
 }
 
-export { changeScaleClickHandler, effectsListClickHandler, createSlider, destroySlider, resetPreviewPhoto };
+export {
+  changeScaleClickHandler,
+  effectsListClickHandler,
+  resetPreviewPhoto,
+  hideSlider,
+};
