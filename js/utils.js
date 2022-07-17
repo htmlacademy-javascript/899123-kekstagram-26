@@ -24,8 +24,6 @@ const getRandomPositiveInteger = (min, max = 0) => {
  */
 const checkStringLength = (string, maxLength = 140) => string.length <= maxLength;
 
-checkStringLength('Lorem ipsum');
-
 /**
  * Генерирует ранее не использованные числа
  * @param {number} min - минимальное число из диапазона
@@ -61,10 +59,46 @@ const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0,
  */
 const isEscape = (code) => (code === 'Escape' || code === 'Esc');
 
+/**
+ *
+ * @param {function} callback - функция, которая будет вызвана через определенное время
+ * @param {number} timeoutDelay - задержка перед вызовом колбэка
+ * @param {*} immediate - нужно ли в первый раз вызвать функцию сразу же
+ * @returns - функция, принимающая аргументы дял колбэка
+ */
+function debounce(cb, timeoutDelay = 500, immediate = true) {
+  let timeoutId;
+
+  return (...rest) => {
+    const context = this;
+
+    const later = function() {
+      timeoutId = null;
+      cb.apply(context, rest);
+    };
+
+    const callNow = immediate && !timeoutId;
+    clearTimeout(timeoutId);
+
+    if (callNow) {
+      cb.apply(context, rest);
+
+      timeoutId = setTimeout(
+        () => {
+          timeoutId = null;
+        },
+        timeoutDelay);
+    } else {
+      timeoutId = setTimeout(later, timeoutDelay);
+    }
+  };
+}
+
 export {
   getRandomPositiveInteger,
   checkStringLength,
   getUniqueRandomPositiveInteger,
   getRandomArrayElement,
   isEscape,
+  debounce,
 };
