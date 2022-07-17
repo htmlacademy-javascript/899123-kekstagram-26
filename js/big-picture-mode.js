@@ -10,7 +10,6 @@ const COMMENTS_PORTION_LENGTH = 5;
 let publication;
 let loadedComments = 0;
 
-const bodyElement = document.body;
 const modalWindowElement = document.querySelector('.big-picture');
 const bigPhotoElement = modalWindowElement.querySelector('.big-picture__img img');
 const likesCountElement = modalWindowElement.querySelector('.likes-count');
@@ -83,7 +82,7 @@ const fillModal = () => {
 
 const closeModal = () => {
   modalWindowElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 
   addFileInputChangeHandler();
 
@@ -99,7 +98,7 @@ const closeModal = () => {
  */
 const openModal = () => {
   modalWindowElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
 
   removeFileInputChangeHandler();
 

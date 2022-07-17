@@ -55,7 +55,7 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
-  if (!hashtags.every((hashtag) => hashtag.startsWith('#'))) {
+  if (hashtags.some((hashtag) => !hashtag.startsWith('#'))) {
     validationErrorMessage = 'Хэштег должен начинаться с #';
     return false;
   }
@@ -70,7 +70,7 @@ const validateHashtags = (hashtagInputValue) => {
     return false;
   }
 
-  if (!hashtags.every((hashtag) => HASHTAG_RE.test(hashtag))) {
+  if (hashtags.some((hashtag) => !HASHTAG_RE.test(hashtag))) {
     validationErrorMessage = 'Хэштег содержит запрещенные символы';
     return false;
   }
