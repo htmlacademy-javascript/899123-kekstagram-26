@@ -2,17 +2,16 @@ import { isEscape } from '../utils.js';
 
 // Элементы DOM
 
-const bodyElement = document.body;
-const errorMessageElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const closeErrorMessageBtnElement = errorMessageElement.querySelector('.error__button');
+const errorMessageCopyElement = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const closeErrorMessageBtnElement = errorMessageCopyElement.querySelector('.error__button');
 
-const successMessageElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-const closeSuccessMessageBtnElement = successMessageElement.querySelector('.success__button');
+const successMessageCopyElement = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const closeSuccessMessageBtnElement = successMessageCopyElement.querySelector('.success__button');
 
 // Управление окнами статуса загрузки публикации
 
 const closeUploadErrorMessage = () => {
-  errorMessageElement.remove();
+  errorMessageCopyElement.remove();
 
   closeErrorMessageBtnElement.removeEventListener('click', closeUploadErrorMessage);
 
@@ -20,10 +19,8 @@ const closeUploadErrorMessage = () => {
   document.removeEventListener('click', messageOutsideClickHandler);
 };
 
-// TODO: Попробовать объединить управления окнами
-
 const closeUploadSuccessMessage = () => {
-  successMessageElement.remove();
+  successMessageCopyElement.remove();
 
   closeSuccessMessageBtnElement.removeEventListener('click', closeUploadSuccessMessage);
 
@@ -38,10 +35,10 @@ const closeUploadSuccessMessage = () => {
 const showUploadStatusMessage = (isSuccess) => {
   if (isSuccess) {
     closeSuccessMessageBtnElement.addEventListener('click', closeUploadSuccessMessage);
-    bodyElement.appendChild(successMessageElement);
+    document.body.appendChild(successMessageCopyElement);
   } else {
     closeErrorMessageBtnElement.addEventListener('click', closeUploadErrorMessage);
-    bodyElement.appendChild(errorMessageElement);
+    document.body.appendChild(errorMessageCopyElement);
   }
 
   document.addEventListener('keydown', messageKeydownHandler);

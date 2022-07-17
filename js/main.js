@@ -6,8 +6,16 @@ import { showFailMessage } from './get-data-error.js';
 
 import { getData } from './web-api/ajax-requests.js';
 
+import { initFilters } from './publications-filter.js';
+
 // main section
 
-getData(renderThumbnails, showFailMessage);
+getData(
+  (publications) => {
+    renderThumbnails(publications);
+    initFilters(publications);
+  },
+  showFailMessage
+);
 
 addFileInputChangeHandler();
