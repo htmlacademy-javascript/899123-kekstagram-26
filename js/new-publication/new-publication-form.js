@@ -20,10 +20,10 @@ import { sendUploadFormData } from '../web-api/ajax-requests.js';
 
 // Переменные
 
-const bodyElement = document.body;
 const formElement = document.querySelector('#upload-select-image');
 const fileInputElement = formElement.querySelector('#upload-file');
 const uploadFormElement = document.querySelector('.img-upload__overlay');
+const imgPreviewElement = uploadFormElement.querySelector('.img-upload__preview img');
 const cancelBtnElement = uploadFormElement.querySelector('#upload-cancel');
 
 const uploadSubmitBtnElement = formElement.querySelector('#upload-submit');
@@ -31,12 +31,23 @@ const uploadSubmitBtnElement = formElement.querySelector('#upload-submit');
 const scaleElement = document.querySelector('.scale');
 const effectsListElement = document.querySelector('.effects__list');
 
+//
+
+const changePreviewPhoto = () => {
+  imgPreviewElement.src = URL.createObjectURL(fileInputElement.files[0]);
+  effectsListElement.querySelectorAll('.effects__preview').forEach((preview) => {
+    preview.style.backgroundImage = `url(${imgPreviewElement.src}`;
+  });
+};
+
 // Управление формой
 
 const openForm = () => {
+  changePreviewPhoto();
+
   uploadSubmitBtnElement.disabled = false;
   uploadFormElement.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
 
   scaleElement.addEventListener('click', changeScaleClickHandler);
   effectsListElement.addEventListener('click', effectsListClickHandler);
@@ -48,11 +59,11 @@ const openForm = () => {
 
 /**
  *
- * @param {boolean} clear - Требуется ли очистить форму?
+ * @param {boolean} isClearForm - Требуется ли очистить форму?
  */
 function closeForm (isClearForm = true) {
   uploadFormElement.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
 
   if (isClearForm) {
     resetUploadFormValidator();
@@ -91,7 +102,7 @@ function formSubmitHandler (evt) {
   evt.preventDefault();
   if (validateUploadForm()) {
     uploadSubmitBtnElement.disabled = true;
-    uploadSubmitBtnElement.textContent = 'Ваша фотография публикуется';
+    uploadSubmitBtnElement.textContent = 'Ваша фотография публикуется...';
 
     sendUploadFormData(new FormData(formElement), successUploadHandler, failureUploadHandler);
 
