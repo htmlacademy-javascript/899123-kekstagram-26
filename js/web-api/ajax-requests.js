@@ -9,19 +9,19 @@ const {getFrom, sendTo} = Settings;
  * @param {function} successHandler - колбэк в случае успеха
  * @param {function} errorHandler - колбэк в случае неудачи
  */
-const getData = (successHandler, errorHandler) => {
-  fetch(getFrom)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
+const getData = async (successHandler, errorHandler) => {
+  try {
+    const response = await fetch(getFrom);
 
-      return response.json();
-    })
-    .then((json) => successHandler(json))
-    .catch(() => {
-      errorHandler();
-    });
+    if (!response.ok) {
+      throw new Error(response.statusText);
+    }
+
+    const json = await response.json();
+    successHandler(json);
+  } catch (err) {
+    errorHandler();
+  }
 };
 
 /**
@@ -30,22 +30,23 @@ const getData = (successHandler, errorHandler) => {
  * @param {function} successHandler - колбэк для успешной отправки
  * @param {function} errorHandler - колбэк для отправки с ошибкой
  */
-const sendUploadFormData = (body, successHandler, errorHandler) => {
-  fetch(
-    sendTo,
-    {
-      method: 'POST',
-      body,
-    },
-  )
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error (response.statusText);
-      } else {
-        successHandler();
-      }
-    })
-    .catch(() => errorHandler());
+const sendUploadFormData = async (body, successHandler, errorHandler) => {
+  try {
+    const response = await fetch(
+      sendTo,
+      {
+        method: 'POST',
+        body,
+      },
+    );
+
+    if (!response.ok) {
+      throw new Error (response.statusText);
+    }
+    successHandler();
+  } catch (err) {
+    errorHandler();
+  }
 };
 
 export {
