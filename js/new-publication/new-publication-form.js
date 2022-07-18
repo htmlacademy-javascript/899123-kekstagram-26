@@ -100,7 +100,8 @@ const successUploadHandler = () => {
 
 const failureUploadHandler = () => {
   showUploadStatusMessage(false);
-  closeForm(false);
+  uploadSubmitBtnElement.disabled = false;
+  // closeForm(false);
 };
 
 /**
