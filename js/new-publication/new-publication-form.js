@@ -18,7 +18,7 @@ import {
 
 import { sendUploadFormData } from '../web-api/ajax-requests.js';
 
-// Переменные
+// Элементы DOM
 
 const formElement = document.querySelector('#upload-select-image');
 const fileInputElement = formElement.querySelector('#upload-file');

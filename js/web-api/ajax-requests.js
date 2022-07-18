@@ -1,8 +1,7 @@
-const Settings = {
-  getFrom: 'https://26.javascript.pages.academy/kekstagram/data',
-  sendTo: 'https://26.javascript.pages.academy/kekstagram',
-};
-const {getFrom, sendTo} = Settings;
+
+const GET_FROM = 'https://26.javascript.pages.academy/kekstagram/data';
+const SEND_TO = 'https://26.javascript.pages.academy/kekstagram';
+const POST = 'POST';
 
 /**
  * Получает данные с сервера
@@ -11,7 +10,7 @@ const {getFrom, sendTo} = Settings;
  */
 const getData = async (successHandler, errorHandler) => {
   try {
-    const response = await fetch(getFrom);
+    const response = await fetch(GET_FROM);
 
     if (!response.ok) {
       throw new Error(response.statusText);
@@ -33,9 +32,9 @@ const getData = async (successHandler, errorHandler) => {
 const sendUploadFormData = async (body, successHandler, errorHandler) => {
   try {
     const response = await fetch(
-      sendTo,
+      SEND_TO,
       {
-        method: 'POST',
+        method: POST,
         body,
       },
     );

@@ -2,15 +2,12 @@ import { checkStringLength } from '../utils.js';
 
 // Переменные
 
-const ValidatorSettings = {
-  HASHTAG_RE: /^#[a-z,а-я,Ё,ё,0-9]{1,19}$/i,
-  MAX_HASHTAGS_AMOUNT: 5,
-  MAX_HASHTAG_LENGTH: 20,
-  MAX_DESCRIPTION_LENGTH: 140,
-};
-const {HASHTAG_RE, MAX_HASHTAGS_AMOUNT, MAX_HASHTAG_LENGTH, MAX_DESCRIPTION_LENGTH, } = ValidatorSettings;
-
+const HASHTAG_RE = /^#[a-z,а-я,Ё,ё,0-9]{1,19}$/i;
+const MAX_HASHTAGS_AMOUNT = 5;
+const MAX_HASHTAG_LENGTH = 20;
+const MAX_DESCRIPTION_LENGTH = 140;
 const DESCRIPTION_VALIDATOR_ERROR_MESSAGE = `Не более ${MAX_DESCRIPTION_LENGTH} символов`;
+
 let uploadFormValidator;
 let validationErrorMessage;
 
