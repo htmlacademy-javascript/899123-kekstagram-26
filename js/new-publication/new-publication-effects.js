@@ -104,8 +104,9 @@ const FiltersSettings = {
 const IMAGE_SCALE_STEP = 25;
 const PREVIEW_MIN_SCALE = 25;
 const PREVIEW_MAX_SCALE = 100;
+const NO_EFFECT = 'none';
 
-let currentEffect = 'none';
+let currentEffect = NO_EFFECT;
 
 // Элементы DOM
 
@@ -138,7 +139,7 @@ const changeScale = (step) => {
 //
 
 const resetPreviewPhoto = () => {
-  currentEffect = 'none';
+  currentEffect = NO_EFFECT;
   imgPreviewElement.classList = '';
   imgPreviewElement.style = '';
 };
@@ -146,7 +147,7 @@ const resetPreviewPhoto = () => {
 // Слайдер эффектов
 
 const changeSlider = () => {
-  if (currentEffect !== 'none') {
+  if (currentEffect !== NO_EFFECT) {
     effectsSliderElement.noUiSlider.updateOptions(FiltersSettings[currentEffect].slider);
   }
 };
@@ -177,35 +178,35 @@ createSlider();
 
 // Обработчики
 
-function changeScaleClickHandler (evt) {
+const changeScaleClickHandler = (evt) => {
   if (evt.target.classList.contains('scale__control--smaller')) {
     changeScale(-IMAGE_SCALE_STEP);
   } else if (evt.target.classList.contains('scale__control--bigger')) {
     changeScale(IMAGE_SCALE_STEP);
   }
-}
+};
 
-function effectsListClickHandler (evt) {
+const effectsListClickHandler = (evt) => {
   if (evt.target.matches('input')) {
     imgPreviewElement.classList.remove(`effects__preview--${currentEffect}`);
     currentEffect = evt.target.value;
     imgPreviewElement.classList.add(`effects__preview--${currentEffect}`);
 
     changeSlider();
-    if (currentEffect !== 'none') {
+    if (currentEffect !== NO_EFFECT) {
       showSlider();
     } else {
       hideSlider();
       imgPreviewElement.style.filter = '';
     }
   }
-}
+};
 
 function sliderUpdateHandler () {
   effectsSliderElement.noUiSlider.on('update', () => {
     effectLevelValueElement.value = effectsSliderElement.noUiSlider.get();
     effectLevelValueElement.name = `effect-${currentEffect}`;
-    if (currentEffect !== 'none') {
+    if (currentEffect !== NO_EFFECT) {
       imgPreviewElement.style.filter = `${FiltersSettings[currentEffect].effect}(${effectLevelValueElement.value}${FiltersSettings[currentEffect].unit})`;
     }
   });

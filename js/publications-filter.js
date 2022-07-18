@@ -6,6 +6,13 @@ import {
 } from './utils.js';
 
 const RANDOM_POSTS_AMOUNT = 10;
+const RERENDER_DELAY = 500;
+
+const FilterNames = {
+  DEFAULT: 'filter-default',
+  RANDOM: 'filter-random',
+  DISSCUSED: 'filter-discussed',
+};
 
 // Элементы DOM
 
@@ -58,17 +65,17 @@ let showMostDiscussedPosts;
 /**
  * Вызывает соответствующую функцию фильтрации
  * @param {array} publications - массив публикаций
- * @param {array} evt - event
+ * @param {object} evt - event
  */
 const changeFilter = (publications, evt) => {
   switch (evt.target.id) {
-    case 'filter-default':
+    case FilterNames.DEFAULT:
       showAllPosts(publications);
       break;
-    case 'filter-random':
+    case FilterNames.RANDOM:
       showRandomPosts(publications);
       break;
-    case 'filter-discussed':
+    case FilterNames.DISSCUSED:
       showMostDiscussedPosts();
       break;
   }
@@ -93,7 +100,7 @@ const initFilters = (publications) => {
  * @returns функция-обработчик нажатия на область выбора фильтра
  */
 function addfiltersFormClickHandler(publications) {
-  const debouncedChangeFilter = debounce(changeFilter, 500, true);
+  const debouncedChangeFilter = debounce(changeFilter, RERENDER_DELAY, true);
   return (evt) => {
     if (evt.target.classList.contains('img-filters__button') && !evt.target.classList.contains('img-filters__button--active')) {
       evt.preventDefault();
