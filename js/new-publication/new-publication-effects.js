@@ -133,7 +133,7 @@ const changeScale = (step) => {
   scale = scale > PREVIEW_MAX_SCALE ? PREVIEW_MAX_SCALE : scale;
   scale = scale < PREVIEW_MIN_SCALE ? PREVIEW_MIN_SCALE : scale;
 
-  imgPreviewElement.style.transform = `scale(${scale}%)`;
+  imgPreviewElement.style.transform = `scale(${scale/100})`;
   scaleInputElement.value = `${scale}%`;
 };
 
