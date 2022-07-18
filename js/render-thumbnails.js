@@ -42,7 +42,7 @@ const initThumbnails = (publications) => {
  * @returns функция-обработчик события клик на миниатюру
  */
 function getThumbnailsContainerClickHandler (publications) {
-  return function(evt) {
+  return (evt) => {
     if (evt.target.closest('.picture') !== null) {
       initPublication(publications.find((publication) => publication.id === Number(evt.target.closest('.picture').dataset.id)));
     }

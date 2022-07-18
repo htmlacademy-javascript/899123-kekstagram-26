@@ -56,7 +56,7 @@ const isEscape = (code) => (code === 'Escape' || code === 'Esc');
  *
  * @param {function} callback - функция, которая будет вызвана через определенное время
  * @param {number} timeoutDelay - задержка перед вызовом колбэка
- * @param {*} immediate - нужно ли в первый раз вызвать функцию сразу же
+ * @param {boolean} immediate - нужно ли в первый раз вызвать функцию сразу же
  * @returns - функция, принимающая аргументы дял колбэка
  */
 function debounce(cb, timeoutDelay = 500, immediate = true) {
@@ -65,7 +65,7 @@ function debounce(cb, timeoutDelay = 500, immediate = true) {
   return (...rest) => {
     const context = this;
 
-    const later = function() {
+    const executeLater = function() {
       timeoutId = null;
       cb.apply(context, rest);
     };
@@ -82,7 +82,7 @@ function debounce(cb, timeoutDelay = 500, immediate = true) {
         },
         timeoutDelay);
     } else {
-      timeoutId = setTimeout(later, timeoutDelay);
+      timeoutId = setTimeout(executeLater, timeoutDelay);
     }
   };
 }
