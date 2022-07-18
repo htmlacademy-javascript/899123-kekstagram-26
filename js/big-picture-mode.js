@@ -86,7 +86,7 @@ const closeModal = () => {
 
   addFileInputChangeHandler();
 
-  closeBtnElement.addEventListener('click', closeModal);
+  closeBtnElement.removeEventListener('click', closeModal);
   commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
   document.removeEventListener('keydown', modalKeydownHandler);
   commentsContainerElement.innerHTML = '';
