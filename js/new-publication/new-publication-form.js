@@ -18,6 +18,8 @@ import {
 
 import { sendUploadFormData } from '../web-api/ajax-requests.js';
 
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+
 // Элементы DOM
 
 const formElement = document.querySelector('#upload-select-image');
@@ -34,16 +36,23 @@ const effectsListElement = document.querySelector('.effects__list');
 //
 
 const changePreviewPhoto = () => {
+  if (!FILE_TYPES.some((type) => fileInputElement.files[0].name.toLowerCase().endsWith(type))) {
+    return false;
+  }
+
   imgPreviewElement.src = URL.createObjectURL(fileInputElement.files[0]);
   effectsListElement.querySelectorAll('.effects__preview').forEach((preview) => {
     preview.style.backgroundImage = `url(${imgPreviewElement.src}`;
   });
+  return true;
 };
 
 // Управление формой
 
 const openForm = () => {
-  changePreviewPhoto();
+  if (!changePreviewPhoto()) {
+    return;
+  }
 
   uploadSubmitBtnElement.disabled = false;
   uploadFormElement.classList.remove('hidden');
