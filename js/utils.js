@@ -46,13 +46,6 @@ const getUniqueRandomPositiveInteger = (min, max) => {
 };
 
 /**
- * Получить случайный элемент из массива
- * @param {array} elements - массив с элементами
- * @returns - случайный элемент из массива
- */
-const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length-1)];
-
-/**
  *
  * @param {string} code - строка с названием клавиши
  * @returns {boolean}
@@ -98,7 +91,6 @@ export {
   getRandomPositiveInteger,
   checkStringLength,
   getUniqueRandomPositiveInteger,
-  getRandomArrayElement,
   isEscape,
   debounce,
 };

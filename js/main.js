@@ -1,4 +1,4 @@
-import { renderThumbnails } from './render-thumbnails.js';
+import { initThumbnails } from './render-thumbnails.js';
 
 import { addFileInputChangeHandler } from './new-publication/new-publication-form.js';
 
@@ -12,7 +12,7 @@ import { initFilters } from './publications-filter.js';
 
 getData(
   (publications) => {
-    renderThumbnails(publications);
+    initThumbnails(publications);
     initFilters(publications);
   },
   showFailMessage

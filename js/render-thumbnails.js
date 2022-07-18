@@ -23,7 +23,15 @@ const renderThumbnails = (publications) => {
   });
 
   picturesContainerElement.appendChild(thumbnailsFragment);
+};
+
+/**
+ * Инициализирует работу миниатюр. Производит первую загрузку
+ * @param {array} publications - массив публикаций
+ */
+const initThumbnails = (publications) => {
   picturesContainerElement.addEventListener('click', getThumbnailsContainerClickHandler(publications));
+  renderThumbnails(publications);
 };
 
 // Обработчики
@@ -41,4 +49,4 @@ function getThumbnailsContainerClickHandler (publications) {
   };
 }
 
-export { renderThumbnails };
+export { renderThumbnails, initThumbnails };

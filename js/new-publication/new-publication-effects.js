@@ -101,12 +101,9 @@ const FiltersSettings = {
   },
 };
 
-const ScaleSettings = {
-  IMAGE_SCALE_STEP: 25,
-  PREVIEW_MIN_SCALE: 25,
-  PREVIEW_MAX_SCALE: 100,
-};
-const {IMAGE_SCALE_STEP, PREVIEW_MIN_SCALE, PREVIEW_MAX_SCALE} = ScaleSettings;
+const IMAGE_SCALE_STEP = 25;
+const PREVIEW_MIN_SCALE = 25;
+const PREVIEW_MAX_SCALE = 100;
 
 let currentEffect = 'none';
 
@@ -117,8 +114,9 @@ const imgPreviewElement = document.querySelector('.img-upload__preview img');
 const scaleElement = document.querySelector('.scale');
 const scaleInputElement = scaleElement.querySelector('.scale__control--value');
 
-const effectLevelValueElement = document.querySelector('.effect-level__value');
-const effectsSliderElement = document.querySelector('.effect-level__slider');
+const effectLevelContainer = document.querySelector('.effect-level');
+const effectLevelValueElement = effectLevelContainer.querySelector('.effect-level__value');
+const effectsSliderElement = effectLevelContainer.querySelector('.effect-level__slider');
 
 // Размер
 
@@ -133,7 +131,7 @@ const changeScale = (step) => {
   scale = scale > PREVIEW_MAX_SCALE ? PREVIEW_MAX_SCALE : scale;
   scale = scale < PREVIEW_MIN_SCALE ? PREVIEW_MIN_SCALE : scale;
 
-  imgPreviewElement.style.transform = `scale(${scale}%)`;
+  imgPreviewElement.style.transform = `scale(${scale/100})`;
   scaleInputElement.value = `${scale}%`;
 };
 
@@ -153,9 +151,9 @@ const changeSlider = () => {
   }
 };
 
-const hideSlider = () => effectsSliderElement.classList.add('hidden');
+const hideSlider = () => effectLevelContainer.classList.add('hidden');
 
-const showSlider = () => effectsSliderElement.classList.remove('hidden');
+const showSlider = () => effectLevelContainer.classList.remove('hidden');
 
 const createSlider = () => {
   noUiSlider.create(effectsSliderElement, {
