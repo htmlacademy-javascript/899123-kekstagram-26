@@ -56,7 +56,7 @@ const loadCommentsPortion = () => {
     commentsLoaderElement.classList.remove('hidden');
   } else {
     commentsLoaderElement.classList.add('hidden');
-    commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
+    commentsLoaderElement.removeEventListener('click', commentsLoaderElementClickHandler);
 
     loadedComments = publication.comments.length;
   }
@@ -86,8 +86,8 @@ const closeModal = () => {
 
   addFileInputChangeHandler();
 
-  closeBtnElement.addEventListener('click', closeModal);
-  commentsLoaderElement.removeEventListener('click', loadCommentsPortion);
+  closeBtnElement.removeEventListener('click', closeBtnElementClickHandler);
+  commentsLoaderElement.removeEventListener('click', commentsLoaderElementClickHandler);
   document.removeEventListener('keydown', modalKeydownHandler);
   commentsContainerElement.innerHTML = '';
 };
@@ -102,8 +102,8 @@ const openModal = () => {
 
   removeFileInputChangeHandler();
 
-  commentsLoaderElement.addEventListener('click', loadCommentsPortion);
-  closeBtnElement.addEventListener('click', closeModal);
+  commentsLoaderElement.addEventListener('click', commentsLoaderElementClickHandler);
+  closeBtnElement.addEventListener('click', closeBtnElementClickHandler);
   document.addEventListener('keydown', modalKeydownHandler);
   fillModal();
 };
@@ -114,6 +114,14 @@ const initPublication = (data) => {
 };
 
 // Обработчики
+
+function closeBtnElementClickHandler() {
+  closeModal();
+}
+
+function commentsLoaderElementClickHandler() {
+  loadCommentsPortion();
+}
 
 /**
  * Закрывает модальное окно, если был нажат Escape.

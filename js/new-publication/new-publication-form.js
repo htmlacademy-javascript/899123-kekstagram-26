@@ -62,7 +62,7 @@ const openForm = () => {
   effectsListElement.addEventListener('click', effectsListClickHandler);
 
   formElement.addEventListener('submit', formSubmitHandler);
-  cancelBtnElement.addEventListener('click', closeForm);
+  cancelBtnElement.addEventListener('click', cancelBtnElementClickHandler);
   document.addEventListener('keydown', formKeydownHandler);
 };
 
@@ -87,11 +87,15 @@ function closeForm (isClearForm = true) {
   effectsListElement.removeEventListener('click', effectsListClickHandler);
 
   formElement.removeEventListener('submit', formSubmitHandler);
-  cancelBtnElement.removeEventListener('click', closeForm);
+  cancelBtnElement.removeEventListener('click', cancelBtnElementClickHandler);
   document.removeEventListener('keydown', formKeydownHandler);
 }
 
 // Обработчики для формы
+
+function cancelBtnElementClickHandler() {
+  closeForm();
+}
 
 const successUploadHandler = () => {
   showUploadStatusMessage(true);
@@ -100,7 +104,7 @@ const successUploadHandler = () => {
 
 const failureUploadHandler = () => {
   showUploadStatusMessage(false);
-  closeForm(false);
+  uploadSubmitBtnElement.disabled = false;
 };
 
 /**
@@ -132,9 +136,15 @@ function formKeydownHandler (evt) {
   }
 }
 
-const addFileInputChangeHandler = () => fileInputElement.addEventListener('change', openForm);
+const addFileInputChangeHandler = () => fileInputElement.addEventListener('change', fileInputElementChangeHandler);
 
-const removeFileInputChangeHandler = () => fileInputElement.removeEventListener('change', openForm);
+const removeFileInputChangeHandler = () => fileInputElement.removeEventListener('change', fileInputElementChangeHandler);
+
+// Обработчики
+
+function fileInputElementChangeHandler() {
+  openForm();
+}
 
 export {
   addFileInputChangeHandler,
