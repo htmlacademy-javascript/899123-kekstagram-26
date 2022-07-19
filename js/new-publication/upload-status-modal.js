@@ -13,7 +13,7 @@ const closeSuccessMessageBtnElement = successMessageCopyElement.querySelector('.
 const closeUploadErrorMessage = () => {
   errorMessageCopyElement.remove();
 
-  closeErrorMessageBtnElement.removeEventListener('click', closeUploadErrorMessage);
+  closeErrorMessageBtnElement.removeEventListener('click', closeErrorMessageBtnElementClickHandler);
 
   document.removeEventListener('keydown', messageKeydownHandler);
   document.removeEventListener('click', messageOutsideClickHandler);
@@ -22,7 +22,7 @@ const closeUploadErrorMessage = () => {
 const closeUploadSuccessMessage = () => {
   successMessageCopyElement.remove();
 
-  closeSuccessMessageBtnElement.removeEventListener('click', closeUploadSuccessMessage);
+  closeSuccessMessageBtnElement.removeEventListener('click', closeSuccessMessageBtnElementClickHandler);
 
   document.removeEventListener('keydown', messageKeydownHandler);
   document.removeEventListener('click', messageOutsideClickHandler);
@@ -34,10 +34,10 @@ const closeUploadSuccessMessage = () => {
  */
 const showUploadStatusMessage = (isSuccess) => {
   if (isSuccess) {
-    closeSuccessMessageBtnElement.addEventListener('click', closeUploadSuccessMessage);
+    closeSuccessMessageBtnElement.addEventListener('click', closeSuccessMessageBtnElementClickHandler);
     document.body.appendChild(successMessageCopyElement);
   } else {
-    closeErrorMessageBtnElement.addEventListener('click', closeUploadErrorMessage);
+    closeErrorMessageBtnElement.addEventListener('click', closeErrorMessageBtnElementClickHandler);
     document.body.appendChild(errorMessageCopyElement);
   }
 
@@ -46,6 +46,14 @@ const showUploadStatusMessage = (isSuccess) => {
 };
 
 // Обработчики для окон
+
+function closeSuccessMessageBtnElementClickHandler() {
+  closeUploadSuccessMessage();
+}
+
+function closeErrorMessageBtnElementClickHandler() {
+  closeUploadErrorMessage();
+}
 
 /**
  * Закрывает сообщение при клики на свободное пространство
